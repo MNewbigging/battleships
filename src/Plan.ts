@@ -7,10 +7,12 @@ import { GridPos, Ship } from './AppState';
  * Will need to have two of these; one for each player
  */
 export class Grid {
+  public gridSize: number;
   // A grid has a 2d array of the squares
   public cells: Cell[][] = [];
 
   constructor(size: number) {
+    this.gridSize = size;
     // Create the squares for this game
     // Could affect game size by altering squares and ships count
     for (let i = 0; i < size; i++) {
@@ -22,7 +24,16 @@ export class Grid {
     }
   }
 
-  getCell(gridPos: GridPos) {
+  getCell(gridPos: GridPos): Cell | undefined {
+    // If position is out of lower bounds, no cell
+    if (gridPos.x < 0 || gridPos.y < 0) {
+      return undefined;
+    }
+    // If position is out of upper bounds, no cell
+    if (gridPos.x >= this.gridSize || gridPos.y >= this.gridSize) {
+      return undefined;
+    }
+
     return this.cells[gridPos.y][gridPos.x];
   }
 
@@ -31,12 +42,21 @@ export class Grid {
   }
 
   areCellsEmpty(positions: GridPos[]) {
+    let empty = true;
     for (const pos of positions) {
-      if (!this.isCellEmpty(pos)) {
-        return false;
+      const cell = this.getCell(pos);
+      if (!cell) {
+        continue;
+      }
+
+      if (cell.content !== '0') {
+        cell.highlight = CellHighlight.CANNOT_DROP;
+        empty = false;
+      } else {
+        cell.highlight = CellHighlight.CAN_DROP;
       }
     }
-    return true;
+    return empty;
   }
 
   highlightCells(positions: GridPos[], highlight: CellHighlight) {

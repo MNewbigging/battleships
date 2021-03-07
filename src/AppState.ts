@@ -1,5 +1,6 @@
 import { action, observable } from 'mobx';
 import { CellHighlight, Grid } from './Plan';
+import { ShipUtils } from './ShipUtils';
 
 export interface GridPos {
   x: number;
@@ -15,8 +16,8 @@ export interface Ship {
 
 const ship1: Ship = {
   type: 'ship',
-  width: 2,
-  height: 1,
+  width: ShipUtils.smallShipSize.width,
+  height: ShipUtils.smallShipSize.height,
   gridPos: {
     x: 0,
     y: 0,
@@ -25,20 +26,13 @@ const ship1: Ship = {
 
 const ship2: Ship = {
   type: 'ship',
-  width: 1,
-  height: 1,
+  width: ShipUtils.smallShipSize.width,
+  height: ShipUtils.smallShipSize.height,
   gridPos: {
     x: 3,
     y: 3,
   },
 };
-
-// Could I use accept on drop target to disallow certain ships?...
-// const ship2: Ship = {
-//   type: 'ship',
-//   width: 2,
-//   height: 1,
-// };
 
 export class AppState {
   @observable yourGrid: Grid;
@@ -46,6 +40,7 @@ export class AppState {
 
   private hoverShip?: Ship;
   private hoverPos?: GridPos;
+  private canHoverBeDropped = false;
 
   constructor() {
     const gridSize = 5;
@@ -60,11 +55,7 @@ export class AppState {
   @action public onHoverDropTarget(ship: Ship, gridPos: GridPos) {
     this.hoverShip = ship;
     this.hoverPos = gridPos;
-    if (this.canDrop(gridPos)) {
-      this.yourGrid.highlightCells([gridPos], CellHighlight.CAN_DROP);
-    } else {
-      this.yourGrid.highlightCells([gridPos], CellHighlight.CANNOT_DROP);
-    }
+    this.canHoverBeDropped = this.canDrop(ship, gridPos);
   }
 
   public onDragEnd() {
@@ -73,22 +64,21 @@ export class AppState {
   }
 
   public onDrop() {
-    console.log('successful drop');
-    // Have already set the ship and pos from hover
-    // Set cell content to taken
-    if (this.canDrop(this.hoverPos)) {
+    // Already set ship drop details on hover
+    if (this.canHoverBeDropped) {
       this.yourGrid.dropOnCell(this.hoverPos, this.hoverShip);
     }
   }
 
-  private canDrop(gridPos: GridPos) {
-    return this.yourGrid.isCellEmpty(gridPos);
+  private canDrop(ship: Ship, gridPos: GridPos) {
+    // Clear any previous cell highlighting
+    this.yourGrid.clearCellsHighlight();
 
-    // Are the cells this ship takes up free?
-    // Count width to the right
-    // Count height downwards
-    // Therefore start/head of ship is always top-left point
+    // Get list of positions to check, start with hover pos
+    const cellsToCheck: GridPos[] = ShipUtils.getSmallShipArea(gridPos);
 
     // What about neighbouring cells?
+
+    return this.yourGrid.areCellsEmpty(cellsToCheck);
   }
 }
