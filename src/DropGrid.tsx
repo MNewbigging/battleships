@@ -27,7 +27,7 @@ export class DropGrid extends React.PureComponent<DGProps> {
             onDrop={() => gState.onDrop()}
             cell={cell}
             children={
-              cell.content === '1' ? (
+              cell.ship ? (
                 <DragItem ship={cell.ship} onDragEnd={() => gState.onDragEnd()} />
               ) : (
                 <div></div>

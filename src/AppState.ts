@@ -15,11 +15,21 @@ export interface Ship {
 
 const ship1: Ship = {
   type: 'ship',
-  width: 1,
+  width: 2,
   height: 1,
   gridPos: {
     x: 0,
     y: 0,
+  },
+};
+
+const ship2: Ship = {
+  type: 'ship',
+  width: 1,
+  height: 1,
+  gridPos: {
+    x: 3,
+    y: 3,
   },
 };
 
@@ -38,11 +48,13 @@ export class AppState {
   private hoverPos?: GridPos;
 
   constructor() {
-    const gridSize = 4;
+    const gridSize = 5;
     this.yourGrid = new Grid(gridSize);
-    this.ships = [ship1];
+    this.ships = [ship1, ship2];
     // Place ships randomly to begin with; user can move them around after
-    this.yourGrid.dropOnCell(this.ships[0].gridPos, this.ships[0]);
+    this.ships.forEach((ship) => {
+      this.yourGrid.dropOnCell(ship.gridPos, ship);
+    });
   }
 
   @action public onHoverDropTarget(ship: Ship, gridPos: GridPos) {
@@ -73,6 +85,9 @@ export class AppState {
     return this.yourGrid.isCellEmpty(gridPos);
 
     // Are the cells this ship takes up free?
+    // Count width to the right
+    // Count height downwards
+    // Therefore start/head of ship is always top-left point
 
     // What about neighbouring cells?
   }
