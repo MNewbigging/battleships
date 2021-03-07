@@ -8,10 +8,11 @@ import { Cell } from './Plan';
 
 interface DAProps {
   onHover: (ship: Ship, gridPos: GridPos) => void;
+  onDrop: () => void;
   cell: Cell;
 }
 
-export const DropArea: React.FC<DAProps> = observer(({ onHover, cell }) => {
+export const DropArea: React.FC<DAProps> = observer(({ onHover, onDrop, cell }) => {
   const [{ isOver }, drop] = useDrop({
     accept: 'ship',
     collect: (monitor) => ({
@@ -19,6 +20,9 @@ export const DropArea: React.FC<DAProps> = observer(({ onHover, cell }) => {
     }),
     hover: (item: Ship, _monitor: DropTargetMonitor) => {
       onHover(item, cell.gridPos);
+    },
+    drop: (_item: Ship, _monitor: DropTargetMonitor) => {
+      onDrop();
     },
   });
 

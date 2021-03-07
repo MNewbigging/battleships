@@ -26,6 +26,10 @@ export class Grid {
     return this.cells[gridPos.y][gridPos.x];
   }
 
+  isCellEmpty(gridPos: GridPos) {
+    return this.getCell(gridPos).content === '0';
+  }
+
   highlightCells(positions: GridPos[], highlight: CellHighlight) {
     this.cells.forEach((row, y) => {
       row.forEach((cell, x) => {
@@ -43,6 +47,11 @@ export class Grid {
     this.cells.forEach((row) => {
       row.forEach((cell) => (cell.highlight = CellHighlight.NONE));
     });
+  }
+
+  dropOnCell(gridPos: GridPos) {
+    const cell = this.getCell(gridPos);
+    cell.content = '1';
   }
 }
 

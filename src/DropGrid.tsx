@@ -20,7 +20,8 @@ export class DropGrid extends React.PureComponent<DGProps> {
         gridCells.push(
           <DropArea
             key={`cell_${i}${j}`}
-            onHover={(ship: Ship, gridPos: GridPos) => gState.canDropOnGrid(ship, gridPos)}
+            onHover={(ship: Ship, gridPos: GridPos) => gState.onHoverDropTarget(ship, gridPos)}
+            onDrop={() => gState.onDrop()}
             cell={cell}
           />
         );

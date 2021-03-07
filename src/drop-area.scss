@@ -11,4 +11,8 @@
   &.can-drop {
     background-color: green;
   }
+
+  &.cannot-drop {
+    background-color: red;
+  }
 }
