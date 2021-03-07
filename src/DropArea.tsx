@@ -12,7 +12,7 @@ interface DAProps {
   cell: Cell;
 }
 
-export const DropArea: React.FC<DAProps> = observer(({ onHover, onDrop, cell }) => {
+export const DropArea: React.FC<DAProps> = observer(({ children, onHover, onDrop, cell }) => {
   const [{ isOver }, drop] = useDrop({
     accept: 'ship',
     collect: (monitor) => ({
@@ -28,7 +28,7 @@ export const DropArea: React.FC<DAProps> = observer(({ onHover, onDrop, cell }) 
 
   return (
     <div ref={drop} className={'drop-area ' + cell.highlight}>
-      {cell.content}
+      {children}
     </div>
   );
 });

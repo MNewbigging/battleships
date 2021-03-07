@@ -18,7 +18,7 @@ export class DnDPage extends React.Component<DnDPageProps> {
     return (
       <DndProvider backend={HTML5Backend}>
         <div className={'dnd-page'}>
-          <DragItemPanel gState={state} />
+          {/* <DragItemPanel gState={state} /> */}
           <DropGrid gState={state} />
         </div>
       </DndProvider>

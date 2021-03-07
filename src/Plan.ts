@@ -1,7 +1,7 @@
 // tslint:disable: max-classes-per-file
 
-import { observable } from 'mobx';
-import { GridPos } from './AppState';
+import { action, observable } from 'mobx';
+import { GridPos, Ship } from './AppState';
 
 /**
  * Will need to have two of these; one for each player
@@ -30,6 +30,15 @@ export class Grid {
     return this.getCell(gridPos).content === '0';
   }
 
+  areCellsEmpty(positions: GridPos[]) {
+    for (const pos of positions) {
+      if (!this.isCellEmpty(pos)) {
+        return false;
+      }
+    }
+    return true;
+  }
+
   highlightCells(positions: GridPos[], highlight: CellHighlight) {
     this.cells.forEach((row, y) => {
       row.forEach((cell, x) => {
@@ -49,9 +58,21 @@ export class Grid {
     });
   }
 
-  dropOnCell(gridPos: GridPos) {
+  /**
+   *
+   * @param gridPos the new position for the ship
+   * @param ship the ship being moved
+   */
+  @action dropOnCell(gridPos: GridPos, ship: Ship) {
+    // Get old cell and remove its ship
+    const oldCell = this.getCell(ship.gridPos);
+    oldCell.content = '0';
+    oldCell.ship = undefined;
+    // Get new cell and update to have this ship
     const cell = this.getCell(gridPos);
     cell.content = '1';
+    cell.ship = ship;
+    ship.gridPos = gridPos;
   }
 }
 
@@ -80,6 +101,8 @@ export class Cell {
   @observable public attack?: Attack;
   @observable public content: string;
   @observable public highlight = CellHighlight.NONE;
+
+  @observable public ship?: Ship;
 
   constructor(pos: GridPos) {
     this.gridPos = pos;
