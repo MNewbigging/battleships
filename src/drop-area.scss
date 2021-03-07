@@ -1,0 +1,14 @@
+.drop-area {
+  width: 100px;
+  height: 100px;
+  border: 1px solid black;
+  box-sizing: border-box;
+
+  &.none {
+    background-color: white;
+  }
+
+  &.can-drop {
+    background-color: green;
+  }
+}
