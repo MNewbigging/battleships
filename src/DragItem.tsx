@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDrag } from 'react-dnd-cjs';
-import { Ship } from './AppState';
+import { Ship } from './ShipUtils';
 import './drag-item.scss';
 
 interface DragItemProps {

@@ -1,8 +1,8 @@
 import { observer } from 'mobx-react';
 import React from 'react';
 import { DropTargetMonitor, useDrop } from 'react-dnd-cjs';
-import { GridPos, Ship } from './AppState';
-
+import { GridPos } from './AppState';
+import { Ship } from './ShipUtils';
 import './drop-area.scss';
 import { Cell } from './Plan';
 

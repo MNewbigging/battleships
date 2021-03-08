@@ -1,20 +1,14 @@
 import { action, observable } from 'mobx';
 import { CellHighlight, Grid } from './Plan';
-import { ShipUtils } from './ShipUtils';
+import { Ship, ShipUtils } from './ShipUtils';
 
 export interface GridPos {
   x: number;
   y: number;
 }
 
-export interface Ship {
-  type: string;
-  width: number;
-  height: number;
-  gridPos: GridPos;
-}
-
 const ship1: Ship = {
+  id: '0',
   type: 'ship',
   width: ShipUtils.smallShipSize.width,
   height: ShipUtils.smallShipSize.height,
@@ -25,6 +19,7 @@ const ship1: Ship = {
 };
 
 const ship2: Ship = {
+  id: '1',
   type: 'ship',
   width: ShipUtils.smallShipSize.width,
   height: ShipUtils.smallShipSize.height,
@@ -52,10 +47,14 @@ export class AppState {
     });
   }
 
-  @action public onHoverDropTarget(ship: Ship, gridPos: GridPos) {
-    this.hoverShip = ship;
-    this.hoverPos = gridPos;
-    this.canHoverBeDropped = this.canDrop(ship, gridPos);
+  @action public onHoverCell(ship: Ship, gridPos: GridPos) {
+    // Only run hover logic once per cell hovered over
+    const equal = ShipUtils.areGridPositionsEqual(this.hoverPos, gridPos);
+    if (!equal) {
+      this.hoverShip = ship;
+      this.hoverPos = gridPos;
+      this.canHoverBeDropped = this.canDrop(ship, gridPos);
+    }
   }
 
   public onDragEnd() {
@@ -68,17 +67,21 @@ export class AppState {
     if (this.canHoverBeDropped) {
       this.yourGrid.dropOnCell(this.hoverPos, this.hoverShip);
     }
+
+    // Clear hover props
+    this.hoverShip = undefined;
+    this.hoverPos = undefined;
+    this.canHoverBeDropped = false;
   }
 
   private canDrop(ship: Ship, gridPos: GridPos) {
     // Clear any previous cell highlighting
     this.yourGrid.clearCellsHighlight();
 
-    // Get list of positions to check, start with hover pos
+    // Get list of positions to check
     const cellsToCheck: GridPos[] = ShipUtils.getSmallShipArea(gridPos);
 
-    // What about neighbouring cells?
-
-    return this.yourGrid.areCellsEmpty(cellsToCheck);
+    // Check cell contents and highlight them against this ship's positions
+    return this.yourGrid.areCellsEmpty(cellsToCheck, ship.id);
   }
 }

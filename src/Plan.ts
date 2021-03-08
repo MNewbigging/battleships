@@ -1,7 +1,8 @@
 // tslint:disable: max-classes-per-file
 
 import { action, observable } from 'mobx';
-import { GridPos, Ship } from './AppState';
+import { GridPos } from './AppState';
+import { Ship } from './ShipUtils';
 
 /**
  * Will need to have two of these; one for each player
@@ -38,38 +39,27 @@ export class Grid {
   }
 
   isCellEmpty(gridPos: GridPos) {
-    return this.getCell(gridPos).content === '0';
+    return this.getCell(gridPos).content === '';
   }
 
-  areCellsEmpty(positions: GridPos[]) {
+  areCellsEmpty(positions: GridPos[], shipId: string) {
     let empty = true;
     for (const pos of positions) {
       const cell = this.getCell(pos);
+      // Discounts out of bounds cells
       if (!cell) {
         continue;
       }
 
-      if (cell.content !== '0') {
+      // If cell contains this ship, or nothing, can drop on it
+      if (cell.content === '' || cell.content === shipId) {
+        cell.highlight = CellHighlight.CAN_DROP;
+      } else {
         cell.highlight = CellHighlight.CANNOT_DROP;
         empty = false;
-      } else {
-        cell.highlight = CellHighlight.CAN_DROP;
       }
     }
     return empty;
-  }
-
-  highlightCells(positions: GridPos[], highlight: CellHighlight) {
-    this.cells.forEach((row, y) => {
-      row.forEach((cell, x) => {
-        // Does this cell appear in positions array?
-        if (positions.some((pos) => pos.x === x && pos.y === y)) {
-          cell.highlight = highlight;
-        } else {
-          cell.highlight = CellHighlight.NONE;
-        }
-      });
-    });
   }
 
   clearCellsHighlight() {
@@ -86,11 +76,11 @@ export class Grid {
   @action dropOnCell(gridPos: GridPos, ship: Ship) {
     // Get old cell and remove its ship
     const oldCell = this.getCell(ship.gridPos);
-    oldCell.content = '0';
+    oldCell.content = '';
     oldCell.ship = undefined;
     // Get new cell and update to have this ship
     const cell = this.getCell(gridPos);
-    cell.content = '1';
+    cell.content = ship.id;
     cell.ship = ship;
     ship.gridPos = gridPos;
   }
@@ -119,13 +109,12 @@ export class Cell {
   // If it has, it can either be a hit or a miss
   public gridPos: GridPos;
   @observable public attack?: Attack;
-  @observable public content: string;
+  @observable public content = '';
   @observable public highlight = CellHighlight.NONE;
 
   @observable public ship?: Ship;
 
   constructor(pos: GridPos) {
     this.gridPos = pos;
-    this.content = '0';
   }
 }

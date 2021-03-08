@@ -11,6 +11,14 @@ export interface ShipSize {
   height: number;
 }
 
+export interface Ship {
+  id: string;
+  type: string;
+  width: number;
+  height: number;
+  gridPos: GridPos;
+}
+
 export class ShipUtils {
   public static smallShipSize: ShipSize = {
     width: 1,
@@ -38,5 +46,13 @@ export class ShipUtils {
     }
 
     return cells;
+  }
+
+  public static areGridPositionsEqual(posA: GridPos, posB: GridPos) {
+    if (!posA || !posB) {
+      return false;
+    }
+
+    return posA.x === posB.x && posA.y === posB.y;
   }
 }
