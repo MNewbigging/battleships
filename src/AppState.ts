@@ -1,6 +1,6 @@
 import { action, observable } from 'mobx';
 import { CellHighlight, Grid } from './Plan';
-import { Ship, ShipUtils } from './ShipUtils';
+import { Ship, ShipArea, ShipUtils } from './ShipUtils';
 
 export interface GridPos {
   x: number;
@@ -79,9 +79,9 @@ export class AppState {
     this.yourGrid.clearCellsHighlight();
 
     // Get list of positions to check
-    const cellsToCheck: GridPos[] = ShipUtils.getSmallShipArea(gridPos);
+    const shipArea: ShipArea = ShipUtils.getSmallShipArea(gridPos);
 
     // Check cell contents and highlight them against this ship's positions
-    return this.yourGrid.areCellsEmpty(cellsToCheck, ship.id);
+    return this.yourGrid.canDropShip(shipArea, ship.id);
   }
 }

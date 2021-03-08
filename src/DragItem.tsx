@@ -1,6 +1,7 @@
 import React from 'react';
 import { useDrag } from 'react-dnd-cjs';
 import { Ship } from './ShipUtils';
+
 import './drag-item.scss';
 
 interface DragItemProps {
@@ -25,8 +26,10 @@ export const DragItem: React.FC<DragItemProps> = ({ ship, onDragEnd }) => {
     border: '1px solid black',
   };
 
+  const dragClass = isDragging ? 'dragging' : '';
+
   return (
-    <div className={'drag-item'} ref={drag} style={style}>
+    <div className={'drag-item ' + dragClass} ref={drag} style={style}>
       drag me
     </div>
   );

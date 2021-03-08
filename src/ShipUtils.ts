@@ -11,6 +11,11 @@ export interface ShipSize {
   height: number;
 }
 
+export interface ShipArea {
+  footprint: GridPos[];
+  boundary: GridPos[];
+}
+
 export interface Ship {
   id: string;
   type: string;
@@ -25,7 +30,13 @@ export class ShipUtils {
     height: 1,
   };
 
-  public static getSmallShipArea(startPos: GridPos) {
+  public static getSmallShipArea(startPos: GridPos): ShipArea {
+    const footprint: GridPos[] = [];
+    const boundary: GridPos[] = [];
+
+    // Footprint for 1x1 ship is the start pos
+    footprint.push(startPos);
+
     const cells: GridPos[] = [];
     // Small ships take up 1x1 cells, so boundary is 3x3
     for (
@@ -38,14 +49,19 @@ export class ShipUtils {
         j <= startPos.y + this.smallShipSize.height;
         j++
       ) {
-        cells.push({
+        // Current position
+        const thisPos: GridPos = {
           x: i,
           y: j,
-        });
+        };
+        // Don't include any positions already in footprint
+        if (!footprint.some((pos) => this.areGridPositionsEqual(pos, thisPos))) {
+          boundary.push(thisPos);
+        }
       }
     }
 
-    return cells;
+    return { footprint, boundary };
   }
 
   public static areGridPositionsEqual(posA: GridPos, posB: GridPos) {

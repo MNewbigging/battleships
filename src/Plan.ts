@@ -2,7 +2,7 @@
 
 import { action, observable } from 'mobx';
 import { GridPos } from './AppState';
-import { Ship } from './ShipUtils';
+import { Ship, ShipArea } from './ShipUtils';
 
 /**
  * Will need to have two of these; one for each player
@@ -38,27 +38,46 @@ export class Grid {
     return this.cells[gridPos.y][gridPos.x];
   }
 
-  isCellEmpty(gridPos: GridPos) {
-    return this.getCell(gridPos).content === '';
-  }
+  canDropShip(shipArea: ShipArea, shipId: string) {
+    let canDrop = true;
 
-  areCellsEmpty(positions: GridPos[], shipId: string) {
-    let empty = true;
-    for (const pos of positions) {
+    // Check footprint first
+    for (const pos of shipArea.footprint) {
       const cell = this.getCell(pos);
       // Discounts out of bounds cells
       if (!cell) {
         continue;
       }
 
-      // If cell contains this ship, or nothing, can drop on it
-      if (cell.content === '' || cell.content === shipId) {
-        cell.highlight = CellHighlight.CAN_DROP;
-      } else {
-        cell.highlight = CellHighlight.CANNOT_DROP;
-        empty = false;
+      // This will check if cell is empty and highlight accordingly
+      if (!this.isCellEmpty(cell, shipId, CellHighlight.SHIP_FOOTPRINT)) {
+        canDrop = false;
       }
     }
+
+    // Then check ship boundaries
+    for (const pos of shipArea.boundary) {
+      const cell = this.getCell(pos);
+      if (!cell) {
+        continue;
+      }
+      if (!this.isCellEmpty(cell, shipId, CellHighlight.CAN_DROP)) {
+        canDrop = false;
+      }
+    }
+
+    return canDrop;
+  }
+
+  isCellEmpty(cell: Cell, shipId: string, highlight: CellHighlight) {
+    let empty = true;
+    if (cell.content === '' || cell.content === shipId) {
+      cell.highlight = highlight;
+    } else {
+      cell.highlight = CellHighlight.CANNOT_DROP;
+      empty = false;
+    }
+
     return empty;
   }
 
@@ -102,6 +121,7 @@ export enum CellHighlight {
   NONE = 'none',
   CAN_DROP = 'can-drop',
   CANNOT_DROP = 'cannot-drop',
+  SHIP_FOOTPRINT = 'ship-footprint',
 }
 
 export class Cell {
