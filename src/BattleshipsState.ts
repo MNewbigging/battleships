@@ -23,6 +23,10 @@ export class BattleshipsState {
     this.bshipsScreen = screen;
   }
 
+  @action setMenuScreen(screen: MenuScreen) {
+    this.menuScreen = screen;
+  }
+
   @action setJoinId(id: string) {
     this.joinId = id;
   }
