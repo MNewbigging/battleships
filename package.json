@@ -31,6 +31,7 @@
     "react-dnd-html5-backend": "^12.1.1",
     "react-dnd-html5-backend-cjs": "^9.5.1",
     "react-dom": "^16.13.1",
+    "react-router-dom": "^5.2.0",
     "react-split-pane": "^0.1.92",
     "save-dev": "0.0.1-security",
     "tslint": "^6.1.2"
@@ -42,6 +43,7 @@
     "@types/react": "^16.9.49",
     "@types/react-dnd": "^3.0.2",
     "@types/react-dom": "^16.9.8",
+    "@types/react-router-dom": "^5.1.7",
     "awesome-typescript-loader": "^5.2.1",
     "css-loader": "^3.6.0",
     "html-webpack-plugin": "^3.2.0",
