@@ -3,6 +3,7 @@ import React from 'react';
 
 import { BattleshipsState, MenuScreen } from '../BattleshipsState';
 import { Button } from '../common/Button';
+import { TextInput } from '../common/TextInput';
 
 interface HostProps {
   bsState: BattleshipsState;
@@ -14,13 +15,10 @@ export class HostPanel extends React.PureComponent<HostProps> {
     const { bsState } = this.props;
     return (
       <>
-        <Button
-          enabled={true}
-          text={'BACK'}
-          onClick={() => bsState.setMenuScreen(MenuScreen.MAIN)}
-        />
-        <div>copy link / host id</div>
-        <div>waiting for player to join</div>
+        <Button enabled text={'BACK'} onClick={() => bsState.setMenuScreen(MenuScreen.MAIN)} />
+        <TextInput readonly value={bsState.hostId} />
+        <Button enabled text={'Copy invite link'} onClick={() => bsState.copyInviteLink()} />
+        <div>{bsState.joinerStatus}</div>
       </>
     );
   }

@@ -3,9 +3,11 @@ import React from 'react';
 import { HashRouter, Route, Switch } from 'react-router-dom';
 
 import { BattleshipsScreen, BattleshipsState } from './BattleshipsState';
+import { Alert } from './common/Alert';
+import { alerter } from './common/Alerter';
+import { MainMenu } from './main-menu/MainMenu';
 
 import './battleships.scss';
-import { MainMenu } from './main-menu/MainMenu';
 
 @observer
 export class Battleships extends React.PureComponent {
@@ -14,16 +16,23 @@ export class Battleships extends React.PureComponent {
   public render() {
     this.parseUrlHash();
 
-    let toRender: JSX.Element;
+    let scene: JSX.Element;
 
     switch (this.bsState.bshipsScreen) {
       case BattleshipsScreen.MENU:
-        toRender = <MainMenu bsState={this.bsState} />;
+        scene = <MainMenu bsState={this.bsState} />;
         break;
       case BattleshipsScreen.GAME:
-        toRender = <div>game</div>;
+        scene = <div>game</div>;
         break;
     }
+
+    const toRender = (
+      <>
+        <Alert open={alerter.alertShowing} content={alerter.alertContent} />
+        {scene}
+      </>
+    );
 
     return (
       <div className={'background'}>

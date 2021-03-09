@@ -1,0 +1,48 @@
+.alert {
+  z-index: 200;
+  position: absolute;
+  left: 50%;
+  top: 28%;
+  transform: translate(-50%, -50%);
+  transition: all 0.3s cubic-bezier(0.455, 0.03, 0.515, 0.955);
+
+  width: 400px;
+  height: 220px;
+  padding: 10px;
+  border: 2px solid black;
+  border-radius: 5px;
+  background-color: white;
+  color: black;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+
+  .heading {
+    font-size: 16pt;
+  }
+
+  .content {
+    font-size: 14pt;
+  }
+
+  &.open {
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  &.closed {
+    transform: translate(-50%, -50%) scale(0);
+  }
+
+  .endgame-buttons {
+    justify-self: flex-end;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .button {
+      margin-left: 10px;
+    }
+  }
+}
