@@ -1,3 +1,4 @@
+import { timeStamp } from 'console';
 import { action, observable } from 'mobx';
 import Peer from 'peerjs';
 import { AlertDuration, alerter } from './common/Alerter';
@@ -20,6 +21,7 @@ export class BattleshipsState {
   @observable public name = '';
   @observable public hostId = '';
   @observable public joinId = '';
+  @observable public joining = false;
   @observable public joinerStatus = 'Waiting for player to join...';
   public peer: Peer;
   public otherPlayer?: Peer.DataConnection;
@@ -58,7 +60,7 @@ export class BattleshipsState {
   }
 
   shouldEnableJoinButton() {
-    return this.name.length > 0 && this.joinId.length > 0;
+    return this.name.length > 0 && this.joinId.length > 0 && !this.joining;
   }
 
   async copyInviteLink() {
@@ -87,6 +89,30 @@ export class BattleshipsState {
   }
 
   joinGame() {
+    this.joining = true;
     const conn = this.peer.connect(this.joinId, { label: this.name });
+
+    // Handle invalid join id
+    this.peer.on('error', () => this.invalidHostId());
+
+    // Handle inevitable first failure
+    conn.peerConnection.onconnectionstatechange = (_ev: Event) => {
+      if (conn.peerConnection.connectionState === 'failed') {
+        this.joinGame();
+      }
+    };
+
+    // Connected to host
+    conn.on('open', () => {
+      this.otherPlayer = conn;
+    });
+  }
+
+  private invalidHostId() {
+    this.joining = false;
+    alerter.showAlert({
+      content: 'Cannot connect to host - check the join id is correct',
+      duration: AlertDuration.NORMAL,
+    });
   }
 }
