@@ -19,13 +19,13 @@ export class MainMenu extends React.PureComponent<MenuProps> {
     let toRender: JSX.Element;
     switch (bsState.menuScreen) {
       case MenuScreen.MAIN:
-        toRender = <MainPanel />;
+        toRender = <MainPanel bsState={bsState} />;
         break;
       case MenuScreen.HOST:
-        toRender = <HostPanel />;
+        toRender = <HostPanel bsState={bsState} />;
         break;
       case MenuScreen.JOIN:
-        toRender = <JoinPanel />;
+        toRender = <JoinPanel bsState={bsState} />;
         break;
     }
 

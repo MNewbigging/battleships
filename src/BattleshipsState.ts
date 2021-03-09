@@ -34,4 +34,6 @@ export class BattleshipsState {
   @action setName(name: string) {
     this.name = name;
   }
+
+  public joinGame() {}
 }
