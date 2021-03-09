@@ -14,7 +14,11 @@ export class JoinPanel extends React.PureComponent<JoinProps> {
     const { bsState } = this.props;
     return (
       <>
-        <Button text={'BACK'} onClick={() => bsState.setMenuScreen(MenuScreen.MAIN)} />
+        <Button
+          enabled={true}
+          text={'BACK'}
+          onClick={() => bsState.setMenuScreen(MenuScreen.MAIN)}
+        />
         <TextInput
           placeholder={'NAME'}
           value={bsState.name}
@@ -25,7 +29,11 @@ export class JoinPanel extends React.PureComponent<JoinProps> {
           value={bsState.joinId}
           onChange={(id: string) => bsState.setJoinId(id)}
         />
-        <Button text={'JOIN GAME'} onClick={() => bsState.joinGame()} />
+        <Button
+          enabled={bsState.shouldEnableJoinButton()}
+          text={'JOIN GAME'}
+          onClick={() => bsState.joinGame()}
+        />
       </>
     );
   }

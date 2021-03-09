@@ -14,7 +14,11 @@ export class HostPanel extends React.PureComponent<HostProps> {
     const { bsState } = this.props;
     return (
       <>
-        <Button text={'BACK'} onClick={() => bsState.setMenuScreen(MenuScreen.MAIN)} />
+        <Button
+          enabled={true}
+          text={'BACK'}
+          onClick={() => bsState.setMenuScreen(MenuScreen.MAIN)}
+        />
         <div>copy link / host id</div>
         <div>waiting for player to join</div>
       </>

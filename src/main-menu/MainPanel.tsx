@@ -20,8 +20,16 @@ export class MainPanel extends React.PureComponent<MainProps> {
           value={bsState.name}
           onChange={(name: string) => bsState.setName(name)}
         />
-        <Button text={'HOST'} onClick={() => bsState.setMenuScreen(MenuScreen.HOST)} />
-        <Button text={'JOIN'} onClick={() => bsState.setMenuScreen(MenuScreen.JOIN)} />
+        <Button
+          enabled={bsState.shouldEnableMainMenuButton()}
+          text={'HOST'}
+          onClick={() => bsState.setMenuScreen(MenuScreen.HOST)}
+        />
+        <Button
+          enabled={bsState.shouldEnableMainMenuButton()}
+          text={'JOIN'}
+          onClick={() => bsState.setMenuScreen(MenuScreen.JOIN)}
+        />
       </>
     );
   }

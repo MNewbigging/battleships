@@ -35,5 +35,13 @@ export class BattleshipsState {
     this.name = name;
   }
 
+  shouldEnableMainMenuButton() {
+    return this.name.length > 0;
+  }
+
+  shouldEnableJoinButton() {
+    return this.name.length > 0 && this.joinId.length > 0;
+  }
+
   public joinGame() {}
 }
