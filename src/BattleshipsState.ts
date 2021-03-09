@@ -1,7 +1,9 @@
-import { timeStamp } from 'console';
 import { action, observable } from 'mobx';
 import Peer from 'peerjs';
+
 import { AlertDuration, alerter } from './common/Alerter';
+import { NameMessage } from './common/Messages';
+import { GameState } from './game/GameState';
 
 export enum BattleshipsScreen {
   MENU,
@@ -14,7 +16,6 @@ export enum MenuScreen {
   JOIN,
 }
 
-// This tracks whether we're in the menu or playing the game
 export class BattleshipsState {
   @observable public bshipsScreen = BattleshipsScreen.MENU;
   @observable public menuScreen = MenuScreen.MAIN;
@@ -23,9 +24,10 @@ export class BattleshipsState {
   @observable public joinId = '';
   @observable public joining = false;
   @observable public joinerStatus = 'Waiting for player to join...';
-  public peer: Peer;
-  public otherPlayer?: Peer.DataConnection;
-  public otherName?: string;
+  private readonly peer: Peer;
+  private otherPlayer?: Peer.DataConnection;
+  private otherName?: string;
+  private gameState?: GameState;
 
   constructor() {
     this.peer = new Peer({
@@ -37,6 +39,9 @@ export class BattleshipsState {
       },
     });
     this.peer.on('open', (id: string) => (this.hostId = id));
+
+    // Prepare to be host by default
+    this.hostGame();
   }
 
   @action setBattleshipsScreen(screen: BattleshipsScreen) {
@@ -83,7 +88,13 @@ export class BattleshipsState {
       this.joinerStatus = `${this.otherName} connecting...`;
 
       conn.on('open', () => {
+        console.log('connected to joiner');
         this.joinerStatus = 'Starting game...';
+        // Send joiner host name
+        const nameMsg = new NameMessage(this.name);
+        conn.send(JSON.stringify(nameMsg));
+        // Ready to start
+        this.onConnect();
       });
     });
   }
@@ -98,6 +109,7 @@ export class BattleshipsState {
     // Handle inevitable first failure
     conn.peerConnection.onconnectionstatechange = (_ev: Event) => {
       if (conn.peerConnection.connectionState === 'failed') {
+        console.log('failed connection, retrying...');
         this.joinGame();
       }
     };
@@ -105,7 +117,15 @@ export class BattleshipsState {
     // Connected to host
     conn.on('open', () => {
       this.otherPlayer = conn;
+      this.onConnect();
     });
+  }
+
+  onConnect() {
+    this.gameState = new GameState(this.peer, this.name, this.otherPlayer, this.otherName);
+    this.otherPlayer.on('data', (data: any) => this.gameState.receiveMessage(JSON.parse(data)));
+    // Delay swap to game
+    setTimeout(() => this.setBattleshipsScreen(BattleshipsScreen.GAME), 3000);
   }
 
   private invalidHostId() {
