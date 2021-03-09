@@ -9,8 +9,8 @@
 
   .grid {
     display: grid;
-    grid-template-columns: repeat(8, minmax(0, 50px));
-    grid-template-rows: repeat(8, minmax(0, 50px));
+    grid-template-columns: repeat(10, minmax(0, 50px));
+    grid-template-rows: repeat(10, minmax(0, 50px));
 
     border-top: 1px solid white;
     border-left: 1px solid white;

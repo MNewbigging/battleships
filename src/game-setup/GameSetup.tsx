@@ -18,7 +18,7 @@ interface SetupProps {
 
 @observer
 export class GameSetup extends React.PureComponent<SetupProps> {
-  private readonly gridSize = 8;
+  private readonly gridSize = 10;
   private readonly setupState = new GameSetupState(this.gridSize);
 
   public render() {

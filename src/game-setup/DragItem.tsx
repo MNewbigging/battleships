@@ -21,16 +21,12 @@ export const DragItem: React.FC<DragItemProps> = ({ ship, onDragEnd }) => {
   });
 
   const style = {
-    width: `${ship.width * 50}px`,
-    height: `${ship.height * 50}px`,
+    width: `${ship.width * 49}px`,
+    height: `${ship.height * 49}px`,
     border: '1px solid black',
   };
 
   const dragClass = isDragging ? 'dragging' : '';
 
-  return (
-    <div className={'drag-item ' + dragClass} ref={drag} style={style}>
-      drag me
-    </div>
-  );
+  return <div className={'drag-item ' + dragClass} ref={drag} style={style}></div>;
 };
