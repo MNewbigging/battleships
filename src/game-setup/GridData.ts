@@ -1,21 +1,20 @@
 // tslint:disable: max-classes-per-file
 
 import { action, observable } from 'mobx';
-import { GridPos } from './AppState';
 import { Ship, ShipArea } from './ShipUtils';
 
-/**
- * Will need to have two of these; one for each player
- */
+export interface GridPos {
+  x: number;
+  y: number;
+}
+
 export class Grid {
   public gridSize: number;
-  // A grid has a 2d array of the squares
   public cells: Cell[][] = [];
 
   constructor(size: number) {
     this.gridSize = size;
-    // Create the squares for this game
-    // Could affect game size by altering squares and ships count
+
     for (let i = 0; i < size; i++) {
       const col: Cell[] = [];
       for (let j = 0; j < size; j++) {
@@ -105,18 +104,6 @@ export class Grid {
   }
 }
 
-/**
- * A single square on the grid. Shows what's on that square.
- */
-enum Attack {
-  HIT,
-  MISS,
-}
-
-/**
- * Will have a component for a square, which looks at this class.
- * It will be styled according to its properties below.
- */
 export enum CellHighlight {
   NONE = 'none',
   CAN_DROP = 'can-drop',
@@ -125,10 +112,7 @@ export enum CellHighlight {
 }
 
 export class Cell {
-  // An attack may not have occurred on this square
-  // If it has, it can either be a hit or a miss
   public gridPos: GridPos;
-  @observable public attack?: Attack;
   @observable public content = '';
   @observable public highlight = CellHighlight.NONE;
 

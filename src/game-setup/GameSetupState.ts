@@ -1,11 +1,6 @@
 import { action, observable } from 'mobx';
-import { CellHighlight, Grid } from './Plan';
 import { Ship, ShipArea, ShipUtils } from './ShipUtils';
-
-export interface GridPos {
-  x: number;
-  y: number;
-}
+import { Grid, GridPos } from './GridData';
 
 const ship1: Ship = {
   id: '0',
@@ -29,21 +24,20 @@ const ship2: Ship = {
   },
 };
 
-export class AppState {
-  @observable yourGrid: Grid;
+export class GameSetupState {
+  @observable grid: Grid;
   public ships: Ship[];
 
   private hoverShip?: Ship;
   private hoverPos?: GridPos;
   private canHoverBeDropped = false;
 
-  constructor() {
-    const gridSize = 5;
-    this.yourGrid = new Grid(gridSize);
+  constructor(gridSize: number) {
+    this.grid = new Grid(gridSize);
     this.ships = [ship1, ship2];
     // Place ships randomly to begin with; user can move them around after
     this.ships.forEach((ship) => {
-      this.yourGrid.dropOnCell(ship.gridPos, ship);
+      this.grid.dropOnCell(ship.gridPos, ship);
     });
   }
 
@@ -59,13 +53,13 @@ export class AppState {
 
   public onDragEnd() {
     // Clear any active highlights
-    this.yourGrid.clearCellsHighlight();
+    this.grid.clearCellsHighlight();
   }
 
   public onDrop() {
     // Already set ship drop details on hover
     if (this.canHoverBeDropped) {
-      this.yourGrid.dropOnCell(this.hoverPos, this.hoverShip);
+      this.grid.dropOnCell(this.hoverPos, this.hoverShip);
     }
 
     // Clear hover props
@@ -76,12 +70,12 @@ export class AppState {
 
   private canDrop(ship: Ship, gridPos: GridPos) {
     // Clear any previous cell highlighting
-    this.yourGrid.clearCellsHighlight();
+    this.grid.clearCellsHighlight();
 
     // Get list of positions to check
     const shipArea: ShipArea = ShipUtils.getSmallShipArea(gridPos);
 
     // Check cell contents and highlight them against this ship's positions
-    return this.yourGrid.canDropShip(shipArea, ship.id);
+    return this.grid.canDropShip(shipArea, ship.id);
   }
 }

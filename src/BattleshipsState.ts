@@ -16,6 +16,12 @@ export enum MenuScreen {
   JOIN,
 }
 
+export enum JoinStatus {
+  WAITING = 'Waiting...',
+  CONNECTING = 'Connecting...',
+  CONNECTED = 'Starting game...',
+}
+
 export class BattleshipsState {
   @observable public bshipsScreen = BattleshipsScreen.MENU;
   @observable public menuScreen = MenuScreen.MAIN;
@@ -23,11 +29,11 @@ export class BattleshipsState {
   @observable public hostId = '';
   @observable public joinId = '';
   @observable public joining = false;
-  @observable public joinerStatus = 'Waiting for player to join...';
+  @observable public joinerStatus = JoinStatus.WAITING;
+  public gameState?: GameState;
   private readonly peer: Peer;
   private otherPlayer?: Peer.DataConnection;
   private otherName?: string;
-  private gameState?: GameState;
 
   constructor() {
     this.peer = new Peer({
@@ -85,11 +91,10 @@ export class BattleshipsState {
     this.peer.on('connection', (conn: Peer.DataConnection) => {
       this.otherPlayer = conn;
       this.otherName = conn.label;
-      this.joinerStatus = `${this.otherName} connecting...`;
+      this.joinerStatus = JoinStatus.CONNECTING;
 
       conn.on('open', () => {
-        console.log('connected to joiner');
-        this.joinerStatus = 'Starting game...';
+        this.joinerStatus = JoinStatus.CONNECTED;
         // Send joiner host name
         const nameMsg = new NameMessage(this.name);
         conn.send(JSON.stringify(nameMsg));
@@ -101,6 +106,7 @@ export class BattleshipsState {
 
   joinGame() {
     this.joining = true;
+    this.joinerStatus = JoinStatus.CONNECTING;
     const conn = this.peer.connect(this.joinId, { label: this.name });
 
     // Handle invalid join id
@@ -109,7 +115,6 @@ export class BattleshipsState {
     // Handle inevitable first failure
     conn.peerConnection.onconnectionstatechange = (_ev: Event) => {
       if (conn.peerConnection.connectionState === 'failed') {
-        console.log('failed connection, retrying...');
         this.joinGame();
       }
     };
@@ -117,6 +122,7 @@ export class BattleshipsState {
     // Connected to host
     conn.on('open', () => {
       this.otherPlayer = conn;
+      this.joinerStatus = JoinStatus.CONNECTED;
       this.onConnect();
     });
   }

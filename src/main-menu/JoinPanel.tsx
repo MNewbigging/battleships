@@ -34,6 +34,7 @@ export class JoinPanel extends React.PureComponent<JoinProps> {
           text={'JOIN GAME'}
           onClick={() => bsState.joinGame()}
         />
+        <div>{bsState.joinerStatus}</div>
       </>
     );
   }

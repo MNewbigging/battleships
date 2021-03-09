@@ -1,10 +1,9 @@
 import { observer } from 'mobx-react';
 import React from 'react';
 import { DropTargetMonitor, useDrop } from 'react-dnd-cjs';
-import { GridPos } from './AppState';
+
+import { Cell, GridPos } from './GridData';
 import { Ship } from './ShipUtils';
-import './drop-area.scss';
-import { Cell } from './Plan';
 
 interface DAProps {
   onHover: (ship: Ship, gridPos: GridPos) => void;

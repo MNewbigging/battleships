@@ -1,4 +1,4 @@
-import { GridPos } from './AppState';
+import { GridPos } from './GridData';
 
 export enum ShipType {
   SMALL = 'small',

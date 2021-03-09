@@ -21,8 +21,8 @@ export const DragItem: React.FC<DragItemProps> = ({ ship, onDragEnd }) => {
   });
 
   const style = {
-    width: `${ship.width * 100}px`,
-    height: `${ship.height * 100}px`,
+    width: `${ship.width * 50}px`,
+    height: `${ship.height * 50}px`,
     border: '1px solid black',
   };
 

@@ -5,6 +5,7 @@ import { HashRouter, Route, Switch } from 'react-router-dom';
 import { BattleshipsScreen, BattleshipsState } from './BattleshipsState';
 import { Alert } from './common/Alert';
 import { alerter } from './common/Alerter';
+import { Game } from './game/Game';
 import { MainMenu } from './main-menu/MainMenu';
 
 import './battleships.scss';
@@ -23,7 +24,7 @@ export class Battleships extends React.PureComponent {
         scene = <MainMenu bsState={this.bsState} />;
         break;
       case BattleshipsScreen.GAME:
-        scene = <div>game</div>;
+        scene = <Game gState={this.bsState.gameState} />;
         break;
     }
 

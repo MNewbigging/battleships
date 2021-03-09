@@ -4,7 +4,7 @@ import { BaseMessage, MessageType, NameMessage } from '../common/Messages';
 
 export enum GameScreen {
   SETUP,
-  GAME,
+  MAIN,
 }
 
 export class GameState {
@@ -28,6 +28,11 @@ export class GameState {
     this.yourName = yourName;
     this.otherPlayer = otherPlayer;
     this.otherPlayerName = otherPlayerName ?? '';
+  }
+
+  // TODO takes game data
+  @action onReadyUp() {
+    // Assign game data, check if both players are ready now
   }
 
   @action receiveMessage(message: BaseMessage) {
