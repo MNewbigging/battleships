@@ -2,11 +2,13 @@ import { action, observable } from 'mobx';
 
 import { Grid, GridPos } from './GridData';
 import { ships } from './ShipData';
-import { Ship, ShipArea, ShipUtils } from './ShipUtils';
+import { Ship, ShipArea, ShipOrientation, ShipUtils } from './ShipUtils';
 
 export class GameSetupState {
-  @observable grid: Grid;
-  public ships: Ship[];
+  public grid: Grid;
+  @observable public ships: Ship[];
+
+  @observable selectedShip?: Ship;
 
   private hoverShip?: Ship;
   private hoverPos?: GridPos;
@@ -19,6 +21,39 @@ export class GameSetupState {
     this.ships.forEach((ship) => {
       this.grid.dropOnCell(ship.gridPos, ship);
     });
+  }
+
+  @action public selectShip(ship: Ship) {
+    this.selectedShip = ship;
+  }
+
+  public shouldEnableRotateButton() {
+    return this.selectedShip !== undefined;
+  }
+
+  @action public rotateShip() {
+    if (!this.selectedShip) {
+      return;
+    }
+
+    // Transpose ship width and height
+    const temp = this.selectedShip.width;
+    this.selectedShip.width = this.selectedShip.height;
+    this.selectedShip.height = temp;
+
+    // Move one along in enum value
+    const dirs = Array.from(Object.values(ShipOrientation));
+    console.log('dirs', dirs);
+
+    let cur = dirs.indexOf(this.selectedShip.facing);
+    console.log('cur: ', cur);
+
+    cur++;
+    if (cur === dirs.length) {
+      cur = 0;
+    }
+
+    this.selectedShip.facing = dirs[cur];
   }
 
   @action public onHoverCell(ship: Ship, gridPos: GridPos) {

@@ -27,7 +27,14 @@ export class GameSetup extends React.PureComponent<SetupProps> {
     return (
       <DndProvider backend={HTML5Backend}>
         <div className={'game-setup'}>
-          <Button enabled text={'READY'} onClick={() => onReady()} />
+          <div className={'button-panel'}>
+            <Button enabled text={'READY'} onClick={() => onReady()} />
+            <Button
+              enabled={this.setupState.shouldEnableRotateButton()}
+              text={'ROTATE'}
+              onClick={() => this.setupState.rotateShip()}
+            />
+          </div>
           {this.renderSetupGrid()}
         </div>
       </DndProvider>
@@ -46,7 +53,12 @@ export class GameSetup extends React.PureComponent<SetupProps> {
             cell={cell}
             children={
               cell.ship ? (
-                <DragItem ship={cell.ship} onDragEnd={() => this.setupState.onDragEnd()} />
+                <DragItem
+                  ship={cell.ship}
+                  onDragEnd={() => this.setupState.onDragEnd()}
+                  onSelect={() => this.setupState.selectShip(cell.ship)}
+                  selected={cell.ship.id === this.setupState.selectedShip?.id}
+                />
               ) : (
                 <div></div>
               )

@@ -23,6 +23,13 @@ export enum ShipName {
   FAT_ROCKET_4 = 'fat-rocket4',
 }
 
+export enum ShipOrientation {
+  UP = 'up',
+  RIGHT = 'right',
+  DOWN = 'down',
+  LEFT = 'left',
+}
+
 export interface ShipSize {
   width: number;
   height: number;
@@ -40,6 +47,7 @@ export interface Ship {
   width: number;
   height: number;
   gridPos: GridPos;
+  facing: ShipOrientation;
 }
 
 export class ShipUtils {

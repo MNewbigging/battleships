@@ -3,12 +3,18 @@
   background-size: contain;
   background-position: center;
   position: absolute;
+  border: none;
   top: 0;
   left: 0;
   z-index: 100;
 
   &.dragging {
     opacity: 0;
+  }
+
+  &.selected {
+    //border: 2px solid turquoise;
+    box-shadow: inset 0 0 5px 2px turquoise;
   }
 
   &.arrowhead {
