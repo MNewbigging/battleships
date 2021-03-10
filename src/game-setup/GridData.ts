@@ -43,9 +43,10 @@ export class Grid {
     // Check footprint first
     for (const pos of shipArea.footprint) {
       const cell = this.getCell(pos);
-      // Discounts out of bounds cells
+      // If a footprint is out of bounds, cannot drop
       if (!cell) {
-        continue;
+        canDrop = false;
+        return canDrop;
       }
 
       // This will check if cell is empty and highlight accordingly
@@ -99,9 +100,9 @@ export class Grid {
     // Get footprint of ship and remove content
     const oldFootprint: GridPos[] = ShipUtils.getShipFootprint(ship, ship.gridPos);
     oldFootprint.forEach((gp) => {
-      const cell = this.getCell(gp);
-      if (cell) {
-        cell.content = '';
+      const oldCell = this.getCell(gp);
+      if (oldCell) {
+        oldCell.content = '';
       }
     });
 
@@ -113,9 +114,9 @@ export class Grid {
     // Then update rest of footprint contents
     const newFootprint: GridPos[] = ShipUtils.getShipFootprint(ship, gridPos);
     newFootprint.forEach((gp) => {
-      const cell = this.getCell(gp);
-      if (cell) {
-        cell.content = ship.id;
+      const newCell = this.getCell(gp);
+      if (newCell) {
+        newCell.content = ship.id;
       }
     });
   }

@@ -37,7 +37,25 @@
 
   &.satellite {
     background-image: url('/assets/satellite.svg');
-    width: 95px;
-    height: 45px;
+  }
+
+  &.satellite-yellow {
+    background-image: url('/assets/satelliteYellow.svg');
+  }
+
+  &.slim-rocket3 {
+    background-image: url('/assets/slimRocket3.svg');
+  }
+
+  &.fat-rocket3 {
+    background-image: url('/assets/fatRocket3.svg');
+  }
+
+  &.slim-rocket4 {
+    background-image: url('/assets/slimRocket4.svg');
+  }
+
+  &.fat-rocket4 {
+    background-image: url('/assets/fatRocket4.svg');
   }
 }

@@ -13,7 +13,13 @@ interface DAProps {
 
 export const DropArea: React.FC<DAProps> = observer(({ children, onHover, onDrop, cell }) => {
   const [{ isOver }, drop] = useDrop({
-    accept: [ShipType.ONE_BY_ONE, ShipType.TWO_BY_ONE],
+    accept: [
+      ShipType.ONE_BY_ONE,
+      ShipType.TWO_BY_ONE,
+      ShipType.THREE_BY_ONE,
+      ShipType.FOUR_BY_ONE,
+      ShipType.TWO_BY_TWO,
+    ],
     collect: (monitor) => ({
       isOver: monitor.isOver(),
     }),
