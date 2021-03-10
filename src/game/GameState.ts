@@ -9,25 +9,25 @@ export enum GameScreen {
 
 export class GameState {
   @observable public gameScreen = GameScreen.SETUP;
-  public yourPlayer: Peer;
-  public yourName: string;
-  public otherPlayer: Peer.DataConnection;
-  @observable public otherPlayerName: string;
-
-  @action setGameScreen(screen: GameScreen) {
-    this.gameScreen = screen;
-  }
+  public yourPlayer?: Peer;
+  public yourName?: string;
+  public otherPlayer?: Peer.DataConnection;
+  @observable public otherPlayerName?: string;
 
   constructor(
-    yourPeer: Peer,
-    yourName: string,
-    otherPlayer: Peer.DataConnection,
+    yourPeer?: Peer,
+    yourName?: string,
+    otherPlayer?: Peer.DataConnection,
     otherPlayerName?: string
   ) {
     this.yourPlayer = yourPeer;
     this.yourName = yourName;
     this.otherPlayer = otherPlayer;
     this.otherPlayerName = otherPlayerName ?? '';
+  }
+
+  @action setGameScreen(screen: GameScreen) {
+    this.gameScreen = screen;
   }
 
   // TODO takes game data

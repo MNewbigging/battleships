@@ -1,6 +1,7 @@
 .drag-item {
-  background: url('/assets/arrowhead.svg');
-  background-size: cover;
+  background: no-repeat;
+  background-size: contain;
+  background-position: center;
   position: absolute;
   top: 0;
   left: 0;
@@ -8,5 +9,25 @@
 
   &.dragging {
     opacity: 0;
+  }
+
+  &.arrowhead {
+    background-image: url('/assets/arrowhead.svg');
+  }
+
+  &.vice {
+    background-image: url('/assets/vice.svg');
+  }
+
+  &.claw {
+    background-image: url('/assets/claw.svg');
+  }
+
+  &.ray {
+    background-image: url('/assets/ray.svg');
+  }
+
+  &.stub {
+    background-image: url('/assets/stub.svg');
   }
 }

@@ -1,28 +1,8 @@
 import { action, observable } from 'mobx';
-import { Ship, ShipArea, ShipUtils } from './ShipUtils';
+
 import { Grid, GridPos } from './GridData';
-
-const ship1: Ship = {
-  id: '0',
-  type: 'ship',
-  width: ShipUtils.smallShipSize.width,
-  height: ShipUtils.smallShipSize.height,
-  gridPos: {
-    x: 0,
-    y: 0,
-  },
-};
-
-const ship2: Ship = {
-  id: '1',
-  type: 'ship',
-  width: ShipUtils.smallShipSize.width,
-  height: ShipUtils.smallShipSize.height,
-  gridPos: {
-    x: 3,
-    y: 3,
-  },
-};
+import { ships } from './ShipData';
+import { Ship, ShipArea, ShipUtils } from './ShipUtils';
 
 export class GameSetupState {
   @observable grid: Grid;
@@ -34,7 +14,7 @@ export class GameSetupState {
 
   constructor(gridSize: number) {
     this.grid = new Grid(gridSize);
-    this.ships = [ship1, ship2];
+    this.ships = ships;
     // Place ships randomly to begin with; user can move them around after
     this.ships.forEach((ship) => {
       this.grid.dropOnCell(ship.gridPos, ship);

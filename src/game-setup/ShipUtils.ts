@@ -1,9 +1,19 @@
 import { GridPos } from './GridData';
 
 export enum ShipType {
-  SMALL = 'small',
-  MEDIUM = 'medium',
-  LARGE = 'large',
+  ONE_BY_ONE = 'one-by-one',
+  TWO_BY_ONE = 'two-by-one',
+  THREE_BY_ONE = 'three-by-one',
+  FOUR_BY_ONE = 'four-by-one',
+  TWO_BY_TWO = 'two-by-two',
+}
+
+export enum ShipName {
+  ARROWHEAD = 'arrowhead',
+  VICE = 'vice',
+  CLAW = 'claw',
+  STUB = 'stub',
+  RAY = 'ray',
 }
 
 export interface ShipSize {
@@ -18,7 +28,8 @@ export interface ShipArea {
 
 export interface Ship {
   id: string;
-  type: string;
+  type: ShipType;
+  name: string;
   width: number;
   height: number;
   gridPos: GridPos;

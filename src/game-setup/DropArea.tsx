@@ -3,7 +3,7 @@ import React from 'react';
 import { DropTargetMonitor, useDrop } from 'react-dnd-cjs';
 
 import { Cell, GridPos } from './GridData';
-import { Ship } from './ShipUtils';
+import { Ship, ShipType } from './ShipUtils';
 
 interface DAProps {
   onHover: (ship: Ship, gridPos: GridPos) => void;
@@ -13,7 +13,7 @@ interface DAProps {
 
 export const DropArea: React.FC<DAProps> = observer(({ children, onHover, onDrop, cell }) => {
   const [{ isOver }, drop] = useDrop({
-    accept: 'ship',
+    accept: [ShipType.ONE_BY_ONE],
     collect: (monitor) => ({
       isOver: monitor.isOver(),
     }),

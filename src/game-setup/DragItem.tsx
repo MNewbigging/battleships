@@ -28,5 +28,7 @@ export const DragItem: React.FC<DragItemProps> = ({ ship, onDragEnd }) => {
 
   const dragClass = isDragging ? 'dragging' : '';
 
-  return <div className={'drag-item ' + dragClass} ref={drag} style={style}></div>;
+  const classes: string[] = ['drag-item', dragClass, ship.name];
+
+  return <div className={classes.join(' ')} ref={drag} style={style}></div>;
 };
