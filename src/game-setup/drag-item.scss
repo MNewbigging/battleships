@@ -30,4 +30,14 @@
   &.stub {
     background-image: url('/assets/stub.svg');
   }
+
+  &.long-tail {
+    background-image: url('/assets/longTail.svg');
+  }
+
+  &.satellite {
+    background-image: url('/assets/satellite.svg');
+    width: 95px;
+    height: 45px;
+  }
 }

@@ -1,7 +1,7 @@
 // tslint:disable: max-classes-per-file
 
 import { action, observable } from 'mobx';
-import { Ship, ShipArea } from './ShipUtils';
+import { Ship, ShipArea, ShipUtils } from './ShipUtils';
 
 export interface GridPos {
   x: number;
@@ -94,13 +94,30 @@ export class Grid {
   @action dropOnCell(gridPos: GridPos, ship: Ship) {
     // Get old cell and remove its ship
     const oldCell = this.getCell(ship.gridPos);
-    oldCell.content = '';
     oldCell.ship = undefined;
+
+    // Get footprint of ship and remove content
+    const oldFootprint: GridPos[] = ShipUtils.getShipFootprint(ship, ship.gridPos);
+    oldFootprint.forEach((gp) => {
+      const cell = this.getCell(gp);
+      if (cell) {
+        cell.content = '';
+      }
+    });
+
     // Get new cell and update to have this ship
     const cell = this.getCell(gridPos);
-    cell.content = ship.id;
-    cell.ship = ship;
     ship.gridPos = gridPos;
+    cell.ship = ship;
+
+    // Then update rest of footprint contents
+    const newFootprint: GridPos[] = ShipUtils.getShipFootprint(ship, gridPos);
+    newFootprint.forEach((gp) => {
+      const cell = this.getCell(gp);
+      if (cell) {
+        cell.content = ship.id;
+      }
+    });
   }
 }
 

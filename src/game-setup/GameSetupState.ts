@@ -23,6 +23,7 @@ export class GameSetupState {
 
   @action public onHoverCell(ship: Ship, gridPos: GridPos) {
     // Only run hover logic once per cell hovered over
+    console.log('on hover');
     const equal = ShipUtils.areGridPositionsEqual(this.hoverPos, gridPos);
     if (!equal) {
       this.hoverShip = ship;
@@ -53,8 +54,8 @@ export class GameSetupState {
     this.grid.clearCellsHighlight();
 
     // Get list of positions to check
-    const shipArea: ShipArea = ShipUtils.getSmallShipArea(gridPos);
-
+    const shipArea: ShipArea = ShipUtils.getShipArea(ship, gridPos);
+    console.log('shiparea', shipArea);
     // Check cell contents and highlight them against this ship's positions
     return this.grid.canDropShip(shipArea, ship.id);
   }

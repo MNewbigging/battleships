@@ -14,6 +14,8 @@ export enum ShipName {
   CLAW = 'claw',
   STUB = 'stub',
   RAY = 'ray',
+  LONG_TAIL = 'long-tail',
+  SATELLITE = 'satellite',
 }
 
 export interface ShipSize {
@@ -36,30 +38,25 @@ export interface Ship {
 }
 
 export class ShipUtils {
-  public static smallShipSize: ShipSize = {
-    width: 1,
-    height: 1,
-  };
+  public static getShipArea(ship: Ship, startPos: GridPos): ShipArea {
+    switch (ship.type) {
+      case ShipType.ONE_BY_ONE:
+        return this.getOneByOneArea(startPos);
+      case ShipType.TWO_BY_ONE:
+        return this.getTwoByOneArea(startPos);
+    }
+  }
 
-  public static getSmallShipArea(startPos: GridPos): ShipArea {
+  public static getOneByOneArea(startPos: GridPos): ShipArea {
     const footprint: GridPos[] = [];
     const boundary: GridPos[] = [];
 
     // Footprint for 1x1 ship is the start pos
     footprint.push(startPos);
 
-    const cells: GridPos[] = [];
     // Small ships take up 1x1 cells, so boundary is 3x3
-    for (
-      let i = startPos.x - this.smallShipSize.width;
-      i <= startPos.x + this.smallShipSize.width;
-      i++
-    ) {
-      for (
-        let j = startPos.y - this.smallShipSize.height;
-        j <= startPos.y + this.smallShipSize.height;
-        j++
-      ) {
+    for (let i = startPos.x - 1; i <= startPos.x + 1; i++) {
+      for (let j = startPos.y - 1; j <= startPos.y + 1; j++) {
         // Current position
         const thisPos: GridPos = {
           x: i,
@@ -73,6 +70,42 @@ export class ShipUtils {
     }
 
     return { footprint, boundary };
+  }
+
+  public static getTwoByOneArea(startPos: GridPos): ShipArea {
+    const footprint: GridPos[] = [];
+    const boundary: GridPos[] = [];
+
+    // Footprint is start pos, then plus 1 on x
+    footprint.push(startPos);
+    footprint.push({ x: startPos.x + 1, y: startPos.y });
+
+    // Boundary is 4x3
+    for (let i = startPos.x - 1; i <= startPos.x + 2; i++) {
+      for (let j = startPos.y - 1; j <= startPos.y + 1; j++) {
+        // Current position
+        const thisPos: GridPos = {
+          x: i,
+          y: j,
+        };
+        if (!footprint.some((pos) => this.areGridPositionsEqual(pos, thisPos))) {
+          boundary.push(thisPos);
+        }
+      }
+    }
+
+    return { footprint, boundary };
+  }
+
+  public static getShipFootprint(ship: Ship, startPos: GridPos) {
+    const footprint: GridPos[] = [startPos];
+    switch (ship.type) {
+      case ShipType.ONE_BY_ONE:
+        return footprint;
+      case ShipType.TWO_BY_ONE:
+        footprint.push({ x: startPos.x + 1, y: startPos.y });
+        return footprint;
+    }
   }
 
   public static areGridPositionsEqual(posA: GridPos, posB: GridPos) {

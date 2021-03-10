@@ -1,11 +1,11 @@
 import { Ship, ShipName, ShipType, ShipUtils } from './ShipUtils';
 
 const ship1: Ship = {
-  id: '0',
+  id: '1',
   type: ShipType.ONE_BY_ONE,
   name: ShipName.ARROWHEAD,
-  width: ShipUtils.smallShipSize.width,
-  height: ShipUtils.smallShipSize.height,
+  width: 1,
+  height: 1,
   gridPos: {
     x: 0,
     y: 0,
@@ -13,11 +13,11 @@ const ship1: Ship = {
 };
 
 const ship2: Ship = {
-  id: '1',
+  id: '2',
   type: ShipType.ONE_BY_ONE,
   name: ShipName.VICE,
-  width: ShipUtils.smallShipSize.width,
-  height: ShipUtils.smallShipSize.height,
+  width: 1,
+  height: 1,
   gridPos: {
     x: 3,
     y: 3,
@@ -25,11 +25,11 @@ const ship2: Ship = {
 };
 
 const ship3: Ship = {
-  id: '2',
+  id: '3',
   type: ShipType.ONE_BY_ONE,
   name: ShipName.CLAW,
-  width: ShipUtils.smallShipSize.width,
-  height: ShipUtils.smallShipSize.height,
+  width: 1,
+  height: 1,
   gridPos: {
     x: 6,
     y: 6,
@@ -37,11 +37,11 @@ const ship3: Ship = {
 };
 
 const ship4: Ship = {
-  id: '3',
+  id: '4',
   type: ShipType.ONE_BY_ONE,
   name: ShipName.RAY,
-  width: ShipUtils.smallShipSize.width,
-  height: ShipUtils.smallShipSize.height,
+  width: 1,
+  height: 1,
   gridPos: {
     x: 9,
     y: 9,
@@ -49,15 +49,39 @@ const ship4: Ship = {
 };
 
 const ship5: Ship = {
-  id: '4',
+  id: '5',
   type: ShipType.ONE_BY_ONE,
   name: ShipName.STUB,
-  width: ShipUtils.smallShipSize.width,
-  height: ShipUtils.smallShipSize.height,
+  width: 1,
+  height: 1,
   gridPos: {
     x: 0,
     y: 9,
   },
 };
 
-export const ships = [ship1, ship2, ship3, ship4, ship5];
+const ship6: Ship = {
+  id: '6',
+  type: ShipType.TWO_BY_ONE,
+  name: ShipName.LONG_TAIL,
+  width: 2,
+  height: 1,
+  gridPos: {
+    x: 5,
+    y: 2,
+  },
+};
+
+const ship7: Ship = {
+  id: '7',
+  type: ShipType.TWO_BY_ONE,
+  name: ShipName.SATELLITE,
+  width: 2,
+  height: 1,
+  gridPos: {
+    x: 1,
+    y: 6,
+  },
+};
+
+export const ships = [ship1, ship2, ship3, ship4, ship5, ship6, ship7];
