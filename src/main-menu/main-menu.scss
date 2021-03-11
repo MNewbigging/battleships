@@ -1,15 +1,25 @@
 .panel {
   position: fixed;
   width: 300px;
-  height: 100%;
+  height: calc(100% - 100px);
   top: 0;
-  left: 0;
-  background: radial-gradient(farthest-corner at bottom, #686868 0%, #a3a3a3 100%);
+  left: 20px;
+  //background: radial-gradient(farthest-corner at bottom, #686868 0%, #a3a3a3 100%);
+  background: transparent;
+  border: 1px solid white;
+  box-shadow: 0 0 5px 2px white;
+  border-radius: 20px;
+  margin: 50px 0px;
 
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
+  .status,
+  .button {
+    margin-top: 20px;
+  }
 }
 
 .how-to-play {

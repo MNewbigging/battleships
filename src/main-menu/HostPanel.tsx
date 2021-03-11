@@ -18,7 +18,7 @@ export class HostPanel extends React.PureComponent<HostProps> {
         <Button enabled text={'BACK'} onClick={() => bsState.setMenuScreen(MenuScreen.MAIN)} />
         <TextInput readonly value={bsState.hostId} />
         <Button enabled text={'Copy invite link'} onClick={() => bsState.copyInviteLink()} />
-        <div>{bsState.joinerStatus}</div>
+        <div className={'status'}>{bsState.joinerStatus}</div>
       </>
     );
   }
