@@ -101,6 +101,30 @@ export class Grid {
   }
 
   @action rotateShip(ship: Ship) {
+    // First check if rotation is possible given space
+    // Need a deep copy so we don't affect ship yet
+    const fakeShip: Ship = {
+      id: ship.id,
+      type: ship.type,
+      name: ship.name,
+      width: ship.width,
+      height: ship.height,
+      gridPos: ship.gridPos,
+      facing: ship.facing,
+    };
+    // Transpose width and height
+    const tempW = fakeShip.width;
+    fakeShip.width = fakeShip.height;
+    fakeShip.height = tempW;
+    // Get the new area for it to check
+    const fakeShipArea = ShipUtils.getShipArea(fakeShip, fakeShip.gridPos);
+    // Remove cell highlihting as a result of canDropShip
+    setTimeout(() => this.clearCellsHighlight(), 800);
+    if (!this.canDropShip(fakeShipArea, fakeShip.id)) {
+      // Stop here if we can't rotate
+      return;
+    }
+
     // Remove ship from current cells
     this.removeShip(ship);
 
