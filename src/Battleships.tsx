@@ -37,9 +37,15 @@ export class Battleships extends React.PureComponent {
 
     return (
       <div className={'background'}>
-        <div className={'stars'}></div>
-        <div className={'stars2'}></div>
-        <div className={'stars3'}></div>
+        <div className={'stars-small'}></div>
+        <div className={'stars-small red'}></div>
+        <div className={'stars-small blue'}></div>
+        <div className={'stars-med'}></div>
+        <div className={'stars-med red'}></div>
+        <div className={'stars-med blue'}></div>
+        <div className={'stars-large'}></div>
+        <div className={'stars-large red'}></div>
+        <div className={'stars-large blue'}></div>
         <HashRouter>
           <Switch>
             <Route render={() => toRender} />

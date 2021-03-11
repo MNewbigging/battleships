@@ -31,7 +31,9 @@ export class MainMenu extends React.PureComponent<MenuProps> {
 
     return (
       <>
-        <div className={'panel'}>{toRender}</div>
+        <div className={'panel'}>
+          <div className={'content'}> {toRender}</div>
+        </div>
         <div className={'how-to-play'}>{this.renderHowToPlay()}</div>
       </>
     );
@@ -40,7 +42,7 @@ export class MainMenu extends React.PureComponent<MenuProps> {
   private renderHowToPlay() {
     return (
       <>
-        <h1>HOW TO PLAY</h1>
+        <h1 className={'heading'}>HOW TO PLAY</h1>
         <p>This is how you play the game</p>
         <p>how awesome</p>
       </>
