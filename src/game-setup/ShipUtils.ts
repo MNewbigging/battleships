@@ -77,23 +77,17 @@ export class ShipUtils {
   }
 
   public static getShipFootprint(ship: Ship, startPos: GridPos) {
-    const footprint: GridPos[] = [startPos];
-    switch (ship.type) {
-      case ShipType.ONE_BY_ONE:
-        break;
-      case ShipType.TWO_BY_ONE:
-        footprint.push({ x: startPos.x + 1, y: startPos.y });
-        break;
-      case ShipType.THREE_BY_ONE:
-        footprint.push({ x: startPos.x + 1, y: startPos.y });
-        footprint.push({ x: startPos.x + 2, y: startPos.y });
-        break;
-      case ShipType.FOUR_BY_ONE:
-        footprint.push({ x: startPos.x + 1, y: startPos.y });
-        footprint.push({ x: startPos.x + 2, y: startPos.y });
-        footprint.push({ x: startPos.x + 3, y: startPos.y });
-        break;
+    const footprint: GridPos[] = [];
+
+    for (let i = startPos.x; i < startPos.x + ship.width; i++) {
+      for (let j = startPos.y; j < startPos.y + ship.height; j++) {
+        footprint.push({
+          x: i,
+          y: j,
+        });
+      }
     }
+
     return footprint;
   }
 

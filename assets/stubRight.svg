@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 100.233 74.15">
+<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"  viewBox="0 0 74.15 100.233">
   <defs>
     <style>
       .cls-1 {
@@ -70,7 +70,7 @@
       }
     </style>
   </defs>
-  <g id="small_wide" data-name="small wide" transform="translate(2244.117 143.1) rotate(180)">
+  <g id="small_wide" data-name="small wide" transform="translate(-68.95 2244.117) rotate(-90)">
     <g id="Group_641" data-name="Group 641">
       <g id="Group_640" data-name="Group 640">
         <path id="Path_2522" data-name="Path 2522" class="cls-1" d="M2214,114.65v-.05l8.6.05,1.9-2h-21l1.9,2.05Z"/>

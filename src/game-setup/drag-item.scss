@@ -13,55 +13,118 @@
   }
 
   &.selected {
-    //border: 2px solid turquoise;
     box-shadow: inset 0 0 5px 2px turquoise;
+  }
+
+  &.up {
+    transform: scaleY(1);
+  }
+
+  &.down {
+    transform: scaleY(-1);
+  }
+
+  &.right {
+    transform: scaleX(1);
+  }
+
+  &.left {
+    transform: scaleX(-1);
   }
 
   &.arrowhead {
     background-image: url('/assets/arrowhead.svg');
+    &.right,
+    &.left {
+      background-image: url('/assets/arrowheadRight.svg');
+    }
   }
 
   &.vice {
     background-image: url('/assets/vice.svg');
+    &.right,
+    &.left {
+      background-image: url('/assets/viceRight.svg');
+    }
   }
 
   &.claw {
     background-image: url('/assets/claw.svg');
+    &.right,
+    &.left {
+      background-image: url('/assets/clawRight.svg');
+    }
   }
 
   &.ray {
     background-image: url('/assets/ray.svg');
+    &.right,
+    &.left {
+      background-image: url('/assets/rayRight.svg');
+    }
   }
 
   &.stub {
     background-image: url('/assets/stub.svg');
+    &.right,
+    &.left {
+      background-image: url('/assets/stubRight.svg');
+    }
   }
 
   &.long-tail {
     background-image: url('/assets/longTail.svg');
+    &.right,
+    &.left {
+      background-image: url('/assets/longTailRight.svg');
+    }
   }
 
   &.satellite {
     background-image: url('/assets/satellite.svg');
+    &.right,
+    &.left {
+      background-image: url('/assets/satelliteRight.svg');
+    }
   }
 
   &.satellite-yellow {
     background-image: url('/assets/satelliteYellow.svg');
+    &.right,
+    &.left {
+      background-image: url('/assets/satelliteYellowRight.svg');
+    }
   }
 
   &.slim-rocket3 {
     background-image: url('/assets/slimRocket3.svg');
+    &.right,
+    &.left {
+      background-image: url('/assets/slimRocket3Right.svg');
+    }
   }
 
   &.fat-rocket3 {
     background-image: url('/assets/fatRocket3.svg');
+    &.right,
+    &.left {
+      background-image: url('/assets/fatRocket3Rightsvg');
+    }
   }
 
   &.slim-rocket4 {
     background-image: url('/assets/slimRocket4.svg');
+    &.right,
+    &.left {
+      background-image: url('/assets/slimRocket4Right.svg');
+    }
   }
 
   &.fat-rocket4 {
     background-image: url('/assets/fatRocket4.svg');
+    &.right,
+    &.left {
+      background-image: url('/assets/fatRocket4Right.svg');
+    }
   }
 }

@@ -36,24 +36,7 @@ export class GameSetupState {
       return;
     }
 
-    // Transpose ship width and height
-    const temp = this.selectedShip.width;
-    this.selectedShip.width = this.selectedShip.height;
-    this.selectedShip.height = temp;
-
-    // Move one along in enum value
-    const dirs = Array.from(Object.values(ShipOrientation));
-    console.log('dirs', dirs);
-
-    let cur = dirs.indexOf(this.selectedShip.facing);
-    console.log('cur: ', cur);
-
-    cur++;
-    if (cur === dirs.length) {
-      cur = 0;
-    }
-
-    this.selectedShip.facing = dirs[cur];
+    this.grid.rotateShip(this.selectedShip);
   }
 
   @action public onHoverCell(ship: Ship, gridPos: GridPos) {

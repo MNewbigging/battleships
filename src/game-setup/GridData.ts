@@ -1,7 +1,7 @@
 // tslint:disable: max-classes-per-file
 
 import { action, observable } from 'mobx';
-import { Ship, ShipArea, ShipUtils } from './ShipUtils';
+import { Ship, ShipArea, ShipOrientation, ShipUtils } from './ShipUtils';
 
 export interface GridPos {
   x: number;
@@ -93,19 +93,52 @@ export class Grid {
    * @param ship the ship being moved
    */
   @action dropOnCell(gridPos: GridPos, ship: Ship) {
-    // Get old cell and remove its ship
-    const oldCell = this.getCell(ship.gridPos);
-    oldCell.ship = undefined;
+    // Remove ship from current cells
+    this.removeShip(ship);
+
+    // Add it to new cells
+    this.addShip(ship, gridPos);
+  }
+
+  @action rotateShip(ship: Ship) {
+    // Remove ship from current cells
+    this.removeShip(ship);
+
+    // Rotate:
+    // Transpose ship width and height
+    const temp = ship.width;
+    ship.width = ship.height;
+    ship.height = temp;
+
+    // Move one along in enum value
+    const dirs = Array.from(Object.values(ShipOrientation));
+    let cur = dirs.indexOf(ship.facing);
+    cur++;
+    if (cur === dirs.length) {
+      cur = 0;
+    }
+    ship.facing = dirs[cur];
+
+    // Drop on new cells
+    this.addShip(ship, ship.gridPos);
+  }
+
+  @action private removeShip(ship: Ship) {
+    // Get current cell and remove its ship
+    const curCell = this.getCell(ship.gridPos);
+    curCell.ship = undefined;
 
     // Get footprint of ship and remove content
-    const oldFootprint: GridPos[] = ShipUtils.getShipFootprint(ship, ship.gridPos);
-    oldFootprint.forEach((gp) => {
-      const oldCell = this.getCell(gp);
-      if (oldCell) {
-        oldCell.content = '';
+    const footprint: GridPos[] = ShipUtils.getShipFootprint(ship, ship.gridPos);
+    footprint.forEach((gp) => {
+      const fpCell = this.getCell(gp);
+      if (fpCell) {
+        fpCell.content = '';
       }
     });
+  }
 
+  @action private addShip(ship: Ship, gridPos: GridPos) {
     // Get new cell and update to have this ship
     const cell = this.getCell(gridPos);
     ship.gridPos = gridPos;
