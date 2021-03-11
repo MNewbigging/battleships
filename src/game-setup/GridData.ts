@@ -12,6 +12,8 @@ export class Grid {
   public gridSize: number;
   public cells: Cell[][] = [];
 
+  private highlightedCells: Cell[] = [];
+
   constructor(size: number) {
     this.gridSize = size;
 
@@ -78,13 +80,16 @@ export class Grid {
       empty = false;
     }
 
+    this.highlightedCells.push(cell);
     return empty;
   }
 
   clearCellsHighlight() {
-    this.cells.forEach((row) => {
-      row.forEach((cell) => (cell.highlight = CellHighlight.NONE));
+    this.highlightedCells.forEach((hc) => {
+      hc.highlight = CellHighlight.NONE;
     });
+
+    this.highlightedCells = [];
   }
 
   /**
