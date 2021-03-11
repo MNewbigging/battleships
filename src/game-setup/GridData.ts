@@ -101,6 +101,7 @@ export class Grid {
   }
 
   @action rotateShip(ship: Ship) {
+    this.clearCellsHighlight();
     // First check if rotation is possible given space
     // Need a deep copy so we don't affect ship yet
     const fakeShip: Ship = {

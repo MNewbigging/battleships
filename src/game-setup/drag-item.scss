@@ -9,6 +9,7 @@
   z-index: 100;
 
   &.dragging {
+    display: none;
     opacity: 0;
   }
 
