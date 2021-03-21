@@ -2,11 +2,17 @@ import { action, observable } from 'mobx';
 import Peer from 'peerjs';
 
 import { BaseMessage, MessageType, NameMessage, ReadyMessage } from '../common/Messages';
-import { Cell } from '../game-setup/GridData';
+import { Cell, GRID_SIZE } from '../game-setup/GridData';
 
 export enum GameScreen {
   SETUP,
   MAIN,
+}
+
+export enum Attack {
+  NONE = 'none',
+  HIT = 'hit',
+  MISS = 'miss',
 }
 
 export class GameState {
@@ -21,6 +27,8 @@ export class GameState {
   // Game data
   public yourGrid?: Cell[][];
   public otherPlayerGrid?: Cell[][];
+  public yourAttacks: Attack[][] = [];
+  public otherPlayerAttacks: Attack[][] = [];
 
   constructor(
     yourPeer: Peer,
@@ -48,7 +56,7 @@ export class GameState {
 
     // If other player is also ready, start the game
     if (this.otherPlayerGrid) {
-      this.setGameScreen(GameScreen.MAIN);
+      this.startGame();
     }
   }
 
@@ -62,9 +70,25 @@ export class GameState {
         const gridStr = (message as ReadyMessage).grid;
         this.otherPlayerGrid = JSON.parse(gridStr);
         if (this.yourGrid) {
-          this.setGameScreen(GameScreen.MAIN);
+          this.startGame();
         }
         break;
     }
+  }
+
+  @action private startGame() {
+    // Setup attack grids
+    for (let i = 0; i < GRID_SIZE; i++) {
+      const yCol: Attack[] = [];
+      const oCol: Attack[] = [];
+      for (let j = 0; j < GRID_SIZE; j++) {
+        oCol.push(Attack.NONE);
+        yCol.push(Attack.NONE);
+      }
+      this.yourAttacks.push(yCol);
+      this.otherPlayerAttacks.push(oCol);
+    }
+
+    this.setGameScreen(GameScreen.MAIN);
   }
 }

@@ -1,4 +1,53 @@
 .game {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
+
+  display: flex;
+  flex-direction: column;
+
+  .top-bar {
+    flex: 0 0 100px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .status-box {
+      width: 150px;
+      height: 60px;
+      border-radius: 5px;
+      border: 1px solid white;
+    }
+  }
+
+  .grid-areas {
+    flex: 0 0 550px;
+    display: flex;
+
+    .grid-container {
+      flex: 1 1 50%;
+
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      .ship-grid {
+        margin-top: 20px;
+        position: relative;
+        width: 500px;
+        height: 500px;
+        display: grid;
+        grid-template-columns: repeat(10, minmax(0, 50px));
+        grid-template-rows: repeat(10, minmax(0, 50px));
+
+        .layout-cell {
+          position: relative;
+        }
+      }
+    }
+  }
 }

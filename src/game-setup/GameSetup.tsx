@@ -7,7 +7,7 @@ import { Button } from '../common/Button';
 import { DragItem } from './DragItem';
 import { DropArea } from './DropArea';
 import { GameSetupState } from './GameSetupState';
-import { Cell, GridPos } from './GridData';
+import { Cell, GridPos, GRID_SIZE } from './GridData';
 import { Ship } from './ShipUtils';
 
 import './game-setup.scss';
@@ -18,8 +18,7 @@ interface SetupProps {
 
 @observer
 export class GameSetup extends React.PureComponent<SetupProps> {
-  private readonly gridSize = 10;
-  private readonly setupState = new GameSetupState(this.gridSize);
+  private readonly setupState = new GameSetupState(GRID_SIZE);
 
   public render() {
     const { onReady } = this.props;

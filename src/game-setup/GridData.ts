@@ -3,6 +3,8 @@
 import { action, observable } from 'mobx';
 import { Ship, ShipArea, ShipOrientation, ShipUtils } from './ShipUtils';
 
+export const GRID_SIZE = 10;
+
 export interface GridPos {
   x: number;
   y: number;

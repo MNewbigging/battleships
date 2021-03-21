@@ -16,6 +16,8 @@
   .grid {
     margin-top: 30px;
     display: grid;
+    width: 500px;
+    height: 500px;
     grid-template-columns: repeat(10, minmax(0, 50px));
     grid-template-rows: repeat(10, minmax(0, 50px));
 
