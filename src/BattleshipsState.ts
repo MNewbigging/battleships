@@ -23,14 +23,14 @@ export enum JoinStatus {
 }
 
 export class BattleshipsState {
-  @observable public bshipsScreen = BattleshipsScreen.GAME;
+  @observable public bshipsScreen = BattleshipsScreen.MENU;
   @observable public menuScreen = MenuScreen.MAIN;
   @observable public name = '';
   @observable public hostId = '';
   @observable public joinId = '';
   @observable public joining = false;
   @observable public joinerStatus = JoinStatus.WAITING;
-  public gameState?: GameState = new GameState();
+  public gameState?: GameState;
   private readonly peer: Peer;
   private otherPlayer?: Peer.DataConnection;
   private otherName?: string;

@@ -3,6 +3,8 @@ import React from 'react';
 
 import { GameState } from './GameState';
 
+import './game.scss';
+
 interface GameProps {
   gState: GameState;
 }
@@ -10,6 +12,10 @@ interface GameProps {
 @observer
 export class GameMain extends React.PureComponent<GameProps> {
   public render() {
-    return <div>game screen</div>;
+    return (
+      <div className={'game'}>
+        <div>oh herro</div>
+      </div>
+    );
   }
 }

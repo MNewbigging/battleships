@@ -2,14 +2,14 @@ import { action, observable } from 'mobx';
 
 import { Grid, GridPos } from './GridData';
 import { ships } from './ShipData';
-import { Ship, ShipArea, ShipOrientation, ShipUtils } from './ShipUtils';
+import { Ship, ShipArea, ShipUtils } from './ShipUtils';
 
 export class GameSetupState {
+  @observable public readyBtnText = 'READY';
+  @observable public readyBtnActive = true;
   public grid: Grid;
   @observable public ships: Ship[];
-
-  @observable selectedShip?: Ship;
-
+  @observable public selectedShip?: Ship;
   private hoverShip?: Ship;
   private hoverPos?: GridPos;
   private canHoverBeDropped = false;
@@ -27,8 +27,13 @@ export class GameSetupState {
     this.selectedShip = ship;
   }
 
+  public readyUp() {
+    this.readyBtnText = 'WAITING';
+    this.readyBtnActive = false;
+  }
+
   public shouldEnableRotateButton() {
-    return this.selectedShip !== undefined;
+    return this.selectedShip !== undefined && this.readyBtnActive === true;
   }
 
   @action public rotateShip() {

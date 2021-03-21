@@ -7,13 +7,13 @@ import { Button } from '../common/Button';
 import { DragItem } from './DragItem';
 import { DropArea } from './DropArea';
 import { GameSetupState } from './GameSetupState';
-import { GridPos } from './GridData';
+import { Cell, GridPos } from './GridData';
 import { Ship } from './ShipUtils';
 
 import './game-setup.scss';
 
 interface SetupProps {
-  onReady: () => void; // will need to pass grid data
+  onReady: (grid: Cell[][]) => void; // will need to pass grid data
 }
 
 @observer
@@ -23,12 +23,19 @@ export class GameSetup extends React.PureComponent<SetupProps> {
 
   public render() {
     const { onReady } = this.props;
-    // TODO: render ready up button, onClick = onReady(gridDataFromState)
+
     return (
       <DndProvider backend={HTML5Backend}>
         <div className={'game-setup'}>
           <div className={'button-panel'}>
-            <Button enabled text={'READY'} onClick={() => onReady()} />
+            <Button
+              enabled={this.setupState.readyBtnActive}
+              text={this.setupState.readyBtnText}
+              onClick={() => {
+                this.setupState.readyUp();
+                onReady(this.setupState.grid.cells);
+              }}
+            />
             <Button
               enabled={this.setupState.shouldEnableRotateButton()}
               text={'ROTATE'}
