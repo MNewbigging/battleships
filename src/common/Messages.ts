@@ -3,6 +3,7 @@
 export enum MessageType {
   NAME,
   READY,
+  START,
 }
 
 export abstract class BaseMessage {
@@ -18,5 +19,11 @@ export class NameMessage extends BaseMessage {
 export class ReadyMessage extends BaseMessage {
   constructor(public grid: string) {
     super(MessageType.READY);
+  }
+}
+
+export class StartMessage extends BaseMessage {
+  constructor(public youStart: boolean) {
+    super(MessageType.START);
   }
 }

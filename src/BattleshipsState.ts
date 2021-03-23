@@ -105,7 +105,7 @@ export class BattleshipsState {
         const nameMsg = new NameMessage(this.name);
         conn.send(JSON.stringify(nameMsg));
         // Ready to start
-        this.onConnect();
+        this.onConnect(true);
       });
     });
   }
@@ -133,8 +133,8 @@ export class BattleshipsState {
     });
   }
 
-  onConnect() {
-    this.gameState = new GameState(this.peer, this.name, this.otherPlayer, this.otherName);
+  onConnect(isHost?: boolean) {
+    this.gameState = new GameState(this.peer, this.name, this.otherPlayer, this.otherName, isHost);
     this.otherPlayer.on('data', (data: any) => this.gameState.receiveMessage(JSON.parse(data)));
     // Delay swap to game
     setTimeout(() => this.setBattleshipsScreen(BattleshipsScreen.GAME), 3000);

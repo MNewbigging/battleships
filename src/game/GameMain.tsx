@@ -1,7 +1,8 @@
 import { observer } from 'mobx-react';
 import React from 'react';
 
-import { GameState } from './GameState';
+import { Button } from '../common/Button';
+import { GameState, Turn } from './GameState';
 import { ShipItem } from './ShipItem';
 import { TargetGrid } from './TargetGrid';
 
@@ -18,7 +19,14 @@ export class GameMain extends React.PureComponent<GameProps> {
     return (
       <div className={'game'}>
         <div className={'top-bar'}>
-          <div className={'status-box'}></div>
+          <div className={'tb-content'}>
+            <div className={'status-box'}>{gState.gameStatus}</div>
+            <Button
+              enabled={gState.shouldEnableAttackBtn()}
+              text={'Attack'}
+              onClick={() => gState.attack()}
+            />
+          </div>
         </div>
         <div className={'grid-areas'}>
           <div className={'grid-container'}>
@@ -44,8 +52,8 @@ export class GameMain extends React.PureComponent<GameProps> {
     gState.yourGrid.forEach((row, i) => {
       row.forEach((cell, j) => {
         cells.push(
-          <div className={'layout-cell'}>
-            {cell.ship ? <ShipItem key={`slg-${i}${j}`} ship={cell.ship} /> : <div></div>}
+          <div key={`slg-${i}${j}`} className={'layout-cell'}>
+            {cell.ship ? <ShipItem ship={cell.ship} /> : <div></div>}
           </div>
         );
       });
@@ -55,10 +63,17 @@ export class GameMain extends React.PureComponent<GameProps> {
   }
 
   private renderEnemyTargetGrid() {
-    return <TargetGrid attacks={this.props.gState.otherPlayerAttacks} />;
+    return <TargetGrid active={false} attacks={this.props.gState.otherPlayerAttacks} />;
   }
 
   private renderYourTargetGrid() {
-    return <TargetGrid attacks={this.props.gState.yourAttacks} />;
+    const { gState } = this.props;
+    return (
+      <TargetGrid
+        active={gState.turn === Turn.YOUR_TURN}
+        attacks={this.props.gState.yourAttacks}
+        onSelectCell={(x: number, y: number) => gState.selectAttackCell(x, y)}
+      />
+    );
   }
 }
