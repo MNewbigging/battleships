@@ -2,11 +2,13 @@ import { observer } from 'mobx-react';
 import React from 'react';
 
 import { Button } from '../common/Button';
+import { AttackGrid } from './AttackGrid';
 import { GameState, Turn } from './GameState';
 import { ShipItem } from './ShipItem';
 import { TargetGrid } from './TargetGrid';
 
 import './game.scss';
+import { GridPos } from '../game-setup/GridData';
 
 interface GameProps {
   gState: GameState;
@@ -19,21 +21,14 @@ export class GameMain extends React.PureComponent<GameProps> {
     return (
       <div className={'game'}>
         <div className={'top-bar'}>
-          <div className={'tb-content'}>
-            <div className={'status-box'}>{gState.gameStatus}</div>
-            <Button
-              enabled={gState.shouldEnableAttackBtn()}
-              text={'Attack'}
-              onClick={() => gState.attack()}
-            />
-          </div>
+          <div className={'status-box'}>{gState.gameStatus}</div>
         </div>
         <div className={'grid-areas'}>
           <div className={'grid-container'}>
             {`${gState.yourName} has 12/12 ships`}
             <div className={'ship-grid'}>
               {this.renderShipLayoutGrid()}
-              {this.renderEnemyTargetGrid()}
+              {this.renderEnemyAttackGrid()}
             </div>
           </div>
           <div className={'grid-container'}>
@@ -62,8 +57,8 @@ export class GameMain extends React.PureComponent<GameProps> {
     return cells;
   }
 
-  private renderEnemyTargetGrid() {
-    return <TargetGrid active={false} attacks={this.props.gState.otherPlayerAttacks} />;
+  private renderEnemyAttackGrid() {
+    return <AttackGrid attacks={this.props.gState.otherPlayerAttacks} />;
   }
 
   private renderYourTargetGrid() {
@@ -72,7 +67,8 @@ export class GameMain extends React.PureComponent<GameProps> {
       <TargetGrid
         active={gState.turn === Turn.YOUR_TURN}
         attacks={this.props.gState.yourAttacks}
-        onSelectCell={(x: number, y: number) => gState.selectAttackCell(x, y)}
+        onSelectCell={(pos: GridPos) => gState.selectAttackCell(pos)}
+        selectedCell={gState.attackTarget}
       />
     );
   }

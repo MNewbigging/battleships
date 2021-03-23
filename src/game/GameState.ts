@@ -8,7 +8,8 @@ import {
   ReadyMessage,
   StartMessage,
 } from '../common/Messages';
-import { Cell, GRID_SIZE } from '../game-setup/GridData';
+import { Cell, GridPos, GRID_SIZE } from '../game-setup/GridData';
+import { ShipUtils } from '../game-setup/ShipUtils';
 
 export enum GameScreen {
   SETUP,
@@ -43,7 +44,7 @@ export class GameState {
   public otherPlayerGrid?: Cell[][];
   public yourAttacks: Attack[][] = [];
   public otherPlayerAttacks: Attack[][] = [];
-  @observable attackTarget?: string;
+  @observable attackTarget?: GridPos;
 
   constructor(
     yourPeer: Peer,
@@ -100,11 +101,17 @@ export class GameState {
     return this.turn === Turn.YOUR_TURN && this.attackTarget !== undefined;
   }
 
-  @action public attack() {
-    this.attackTarget = undefined;
+  @action public selectAttackCell(pos: GridPos) {
+    if (ShipUtils.areGridPositionsEqual(this.attackTarget, pos)) {
+      this.attack(pos);
+    } else {
+      this.attackTarget = pos;
+    }
   }
 
-  @action public selectAttackCell(x: number, y: number) {}
+  @action private attack(pos: GridPos) {
+    this.attackTarget = undefined;
+  }
 
   @action private readyGame() {
     this.setupAttackGrids();
