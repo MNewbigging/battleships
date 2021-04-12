@@ -1,5 +1,6 @@
 import { action, observable } from 'mobx';
 import Peer from 'peerjs';
+import { AlertDuration, alerter } from '../common/Alerter';
 
 import {
   AttackMessage,
@@ -42,10 +43,13 @@ export class GameState {
   public turn: Turn;
   @observable public gameStatus = '';
   public yourGrid?: Cell[][];
-  public otherPlayerGrid?: Cell[][];
-  @observable public yourAttacks: TargetCell[][] = [];
-  @observable public otherPlayerAttacks: TargetCell[][] = [];
   @observable public attackTarget?: GridPos;
+  @observable public yourAttacks: TargetCell[][] = [];
+  public previousAttacks: GridPos[] = [];
+
+  @observable public otherPlayerAttacks: TargetCell[][] = [];
+  public otherPlayerGrid?: Cell[][];
+  public otherPlayerShips: GridPos[][] = [];
 
   constructor(
     yourPeer: Peer,
@@ -102,6 +106,14 @@ export class GameState {
   }
 
   @action public selectAttackCell(pos: GridPos) {
+    // Cannot target already-attacked cells
+    for (const prevAttack of this.previousAttacks) {
+      if (ShipUtils.areGridPositionsEqual(prevAttack, pos)) {
+        return;
+      }
+    }
+
+    // Check if pressing for the second time to fire
     if (ShipUtils.areGridPositionsEqual(this.attackTarget, pos)) {
       this.attack(pos);
     } else {
@@ -117,20 +129,64 @@ export class GameState {
 
   @action private attack(pos: GridPos) {
     // Check for a hit or miss
-    const attack = this.otherPlayerGrid[pos.x][pos.y]?.content !== '' ? Attack.HIT : Attack.MISS;
+    const otherPlayerCell = this.otherPlayerGrid[pos.x][pos.y];
+    const attack = otherPlayerCell.content !== '' ? Attack.HIT : Attack.MISS;
+
+    // Update your attacks
     this.yourAttacks[pos.x][pos.y].attack = attack;
+    this.previousAttacks.push(pos);
+    if (attack === Attack.HIT) {
+      this.onHitEnemyShip(otherPlayerCell.content, { x: pos.y, y: pos.x });
+    }
 
     // Inform opponent of attack made
     const attackMsg = new AttackMessage(this.yourAttacks);
     this.otherPlayer.send(JSON.stringify(attackMsg));
 
     // Check if you can fire again
+    this.canFireAgain(attack, otherPlayerCell.content);
 
+    // Clear attack target
     this.attackTarget = undefined;
+    this.yourAttacks[pos.x][pos.y].selected = false;
+  }
+
+  private onHitEnemyShip(shipId: string, hitPos: GridPos) {
+    // Get the array of targets for that ship
+    const idx = parseInt(shipId, 10);
+    let enemyShipTargets = this.otherPlayerShips[idx];
+    if (!enemyShipTargets) {
+      return;
+    }
+
+    // Remove this hitPos from the ship's targets
+    enemyShipTargets = enemyShipTargets.filter(
+      (target) => !ShipUtils.areGridPositionsEqual(target, hitPos)
+    );
+    this.otherPlayerShips[idx] = enemyShipTargets;
+  }
+
+  private canFireAgain(attack: Attack, shipId: string) {
+    if (attack === Attack.MISS) {
+      return false;
+    }
+
+    const idx = parseInt(shipId, 10);
+    const enemyShipTargets = this.otherPlayerShips[idx];
+    if (enemyShipTargets.length > 0) {
+      return true;
+    } else {
+      alerter.showAlert({
+        content: 'You destroyed an enemy ship!',
+        duration: AlertDuration.QUICK,
+      });
+      return false;
+    }
   }
 
   @action private readyGame() {
     this.setupAttackGrids();
+    this.setupShipTargets();
 
     // Host rolls for starting player
     if (this.isHost) {
@@ -154,6 +210,27 @@ export class GameState {
       this.yourAttacks.push(yCol);
       this.otherPlayerAttacks.push(oCol);
     }
+  }
+
+  @action private setupShipTargets() {
+    // Create empty ship array
+    for (let i = 0; i < 12; i++) {
+      this.otherPlayerShips.push([]);
+    }
+
+    // get all ships from opponent's grid
+    this.otherPlayerGrid.forEach((row) => {
+      row.forEach((cell) => {
+        const ship = cell.ship;
+        if (ship) {
+          const idx = parseInt(ship.id, 10);
+          const footprint = ShipUtils.getShipFootprint(ship, ship.gridPos);
+          this.otherPlayerShips[idx] = footprint;
+        }
+      });
+    });
+
+    console.log('otherplayerships: ', this.otherPlayerShips);
   }
 
   @action private decideStartingPlayer() {

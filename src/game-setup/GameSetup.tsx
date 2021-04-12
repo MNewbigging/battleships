@@ -32,7 +32,7 @@ export class GameSetup extends React.PureComponent<SetupProps> {
               text={this.setupState.readyBtnText}
               onClick={() => {
                 this.setupState.readyUp();
-                onReady(this.setupState.grid.cells);
+                onReady(this.setupState.getReadyCells());
               }}
             />
             <Button

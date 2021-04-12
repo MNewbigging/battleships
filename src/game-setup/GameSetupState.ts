@@ -8,7 +8,6 @@ export class GameSetupState {
   @observable public readyBtnText = 'READY';
   @observable public readyBtnActive = true;
   public grid: Grid;
-  @observable public ships: Ship[];
   @observable public selectedShip?: Ship;
   private hoverShip?: Ship;
   private hoverPos?: GridPos;
@@ -16,9 +15,8 @@ export class GameSetupState {
 
   constructor(gridSize: number) {
     this.grid = new Grid(gridSize);
-    this.ships = ships;
-    // Place ships randomly to begin with; user can move them around after
-    this.ships.forEach((ship) => {
+
+    [...ships].forEach((ship) => {
       this.grid.dropOnCell(ship.gridPos, ship);
     });
   }
@@ -30,6 +28,10 @@ export class GameSetupState {
   public readyUp() {
     this.readyBtnText = 'WAITING';
     this.readyBtnActive = false;
+  }
+
+  public getReadyCells() {
+    return this.grid.cells;
   }
 
   public shouldEnableRotateButton() {

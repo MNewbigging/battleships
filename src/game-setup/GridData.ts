@@ -201,6 +201,7 @@ export class Cell {
   @observable public highlight = CellHighlight.NONE;
 
   @observable public ship?: Ship;
+  public shipStartPos?: GridPos;
 
   constructor(pos: GridPos) {
     this.gridPos = pos;

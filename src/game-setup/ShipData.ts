@@ -1,7 +1,7 @@
 import { Ship, ShipName, ShipOrientation, ShipType } from './ShipUtils';
 
 const ship1: Ship = {
-  id: '1',
+  id: '0',
   type: ShipType.ONE_BY_ONE,
   name: ShipName.ARROWHEAD,
   facing: ShipOrientation.UP,
@@ -14,7 +14,7 @@ const ship1: Ship = {
 };
 
 const ship2: Ship = {
-  id: '2',
+  id: '1',
   type: ShipType.ONE_BY_ONE,
   name: ShipName.VICE,
   facing: ShipOrientation.UP,
@@ -27,7 +27,7 @@ const ship2: Ship = {
 };
 
 const ship3: Ship = {
-  id: '3',
+  id: '2',
   type: ShipType.ONE_BY_ONE,
   name: ShipName.CLAW,
   facing: ShipOrientation.UP,
@@ -40,7 +40,7 @@ const ship3: Ship = {
 };
 
 const ship4: Ship = {
-  id: '4',
+  id: '3',
   type: ShipType.ONE_BY_ONE,
   name: ShipName.RAY,
   facing: ShipOrientation.UP,
@@ -53,7 +53,7 @@ const ship4: Ship = {
 };
 
 const ship5: Ship = {
-  id: '5',
+  id: '4',
   type: ShipType.ONE_BY_ONE,
   name: ShipName.STUB,
   facing: ShipOrientation.UP,
@@ -66,7 +66,7 @@ const ship5: Ship = {
 };
 
 const ship6: Ship = {
-  id: '6',
+  id: '5',
   type: ShipType.TWO_BY_ONE,
   name: ShipName.LONG_TAIL,
   facing: ShipOrientation.UP,
@@ -79,7 +79,7 @@ const ship6: Ship = {
 };
 
 const ship7: Ship = {
-  id: '7',
+  id: '6',
   type: ShipType.TWO_BY_ONE,
   name: ShipName.SATELLITE,
   facing: ShipOrientation.UP,
@@ -92,7 +92,7 @@ const ship7: Ship = {
 };
 
 const ship8: Ship = {
-  id: '8',
+  id: '7',
   type: ShipType.THREE_BY_ONE,
   name: ShipName.SLIM_ROCKET_3,
   facing: ShipOrientation.UP,
@@ -105,7 +105,7 @@ const ship8: Ship = {
 };
 
 const ship9: Ship = {
-  id: '9',
+  id: '8',
   type: ShipType.THREE_BY_ONE,
   name: ShipName.FAT_ROCKET_3,
   facing: ShipOrientation.UP,
@@ -118,7 +118,7 @@ const ship9: Ship = {
 };
 
 const ship10: Ship = {
-  id: '10',
+  id: '9',
   type: ShipType.FOUR_BY_ONE,
   name: ShipName.SLIM_ROCKET_4,
   facing: ShipOrientation.UP,
@@ -131,7 +131,7 @@ const ship10: Ship = {
 };
 
 const ship11: Ship = {
-  id: '11',
+  id: '10',
   type: ShipType.FOUR_BY_ONE,
   name: ShipName.FAT_ROCKET_4,
   facing: ShipOrientation.UP,
@@ -144,7 +144,7 @@ const ship11: Ship = {
 };
 
 const ship12: Ship = {
-  id: '12',
+  id: '11',
   type: ShipType.TWO_BY_ONE,
   name: ShipName.SATELLITE2,
   facing: ShipOrientation.UP,

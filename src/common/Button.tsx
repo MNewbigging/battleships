@@ -10,11 +10,18 @@ interface ButtonProps {
 
 export class Button extends React.PureComponent<ButtonProps> {
   public render() {
-    const { enabled, text, onClick } = this.props;
+    const { enabled, text } = this.props;
     return (
-      <button className={'button'} onClick={onClick} disabled={!enabled}>
+      <button className={'button'} onClick={this.onButtonClick} disabled={!enabled}>
         {text}
       </button>
     );
   }
+
+  private readonly onButtonClick = (e: React.MouseEvent<HTMLElement>) => {
+    const { onClick } = this.props;
+
+    e.stopPropagation();
+    onClick();
+  };
 }
