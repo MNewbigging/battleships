@@ -1,14 +1,13 @@
 import { observer } from 'mobx-react';
 import React from 'react';
 
-import { Button } from '../common/Button';
+import { GridPos } from '../game-setup/GridData';
 import { AttackGrid } from './AttackGrid';
 import { GameState, Turn } from './GameState';
 import { ShipItem } from './ShipItem';
 import { TargetGrid } from './TargetGrid';
 
 import './game.scss';
-import { GridPos } from '../game-setup/GridData';
 
 interface GameProps {
   gState: GameState;
@@ -66,9 +65,8 @@ export class GameMain extends React.PureComponent<GameProps> {
     return (
       <TargetGrid
         active={gState.turn === Turn.YOUR_TURN}
-        attacks={this.props.gState.yourAttacks}
+        targetCells={this.props.gState.yourAttacks}
         onSelectCell={(pos: GridPos) => gState.selectAttackCell(pos)}
-        selectedCell={gState.attackTarget}
       />
     );
   }

@@ -1,12 +1,12 @@
 import { observer } from 'mobx-react';
 import React from 'react';
 
-import { Attack } from './GameState';
+import { TargetCell } from '../game-setup/GridData';
 
 import './target-grid.scss';
 
 interface AGProps {
-  attacks: Attack[][];
+  attacks: TargetCell[][];
 }
 
 @observer
@@ -20,8 +20,8 @@ export class AttackGrid extends React.PureComponent<AGProps> {
     const cells: JSX.Element[] = [];
 
     attacks.forEach((row, i) => {
-      row.forEach((attack, j) => {
-        cells.push(<div key={`ac-${i}${j}`} className={'target-cell ' + attack}></div>);
+      row.forEach((targetCell, j) => {
+        cells.push(<div key={`ac-${i}${j}`} className={'target-cell ' + targetCell.attack}></div>);
       });
     });
 

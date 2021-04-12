@@ -9,6 +9,12 @@
   border-top: 1px solid white;
   border-left: 1px solid white;
 
+  &.active {
+    .target-cell:hover {
+      box-shadow: inset 0 0 5px 2px turquoise;
+    }
+  }
+
   .target-cell {
     width: 100%;
     height: 100%;
@@ -22,11 +28,13 @@
         height: 100%;
       }
     }
-  }
 
-  &.active {
-    .target-cell:hover {
-      box-shadow: inset 0 0 5px 2px turquoise;
+    &.hit {
+      box-shadow: inset 0 0 5px 2px red;
+    }
+
+    &.miss {
+      box-shadow: inset 0 0 5px 2px white;
     }
   }
 }

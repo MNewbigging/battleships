@@ -2,13 +2,14 @@ import { action, observable } from 'mobx';
 import Peer from 'peerjs';
 
 import {
+  AttackMessage,
   BaseMessage,
   MessageType,
   NameMessage,
   ReadyMessage,
   StartMessage,
 } from '../common/Messages';
-import { Cell, GridPos, GRID_SIZE } from '../game-setup/GridData';
+import { Cell, GridPos, GRID_SIZE, TargetCell } from '../game-setup/GridData';
 import { ShipUtils } from '../game-setup/ShipUtils';
 
 export enum GameScreen {
@@ -42,9 +43,9 @@ export class GameState {
   @observable public gameStatus = '';
   public yourGrid?: Cell[][];
   public otherPlayerGrid?: Cell[][];
-  public yourAttacks: Attack[][] = [];
-  public otherPlayerAttacks: Attack[][] = [];
-  @observable attackTarget?: GridPos;
+  @observable public yourAttacks: TargetCell[][] = [];
+  @observable public otherPlayerAttacks: TargetCell[][] = [];
+  @observable public attackTarget?: GridPos;
 
   constructor(
     yourPeer: Peer,
@@ -94,22 +95,37 @@ export class GameState {
       case MessageType.START:
         this.startGame((message as StartMessage).youStart);
         break;
+      case MessageType.ATTACK:
+        this.otherPlayerAttacks = (message as AttackMessage).attackGrid;
+        break;
     }
-  }
-
-  public shouldEnableAttackBtn() {
-    return this.turn === Turn.YOUR_TURN && this.attackTarget !== undefined;
   }
 
   @action public selectAttackCell(pos: GridPos) {
     if (ShipUtils.areGridPositionsEqual(this.attackTarget, pos)) {
       this.attack(pos);
     } else {
+      // Deselect any last selected pos
+      if (this.attackTarget) {
+        this.yourAttacks[this.attackTarget.x][this.attackTarget.y].selected = false;
+      }
+      // Select the new target
       this.attackTarget = pos;
+      this.yourAttacks[pos.x][pos.y].selected = true;
     }
   }
 
   @action private attack(pos: GridPos) {
+    // Check for a hit or miss
+    const attack = this.otherPlayerGrid[pos.x][pos.y]?.content !== '' ? Attack.HIT : Attack.MISS;
+    this.yourAttacks[pos.x][pos.y].attack = attack;
+
+    // Inform opponent of attack made
+    const attackMsg = new AttackMessage(this.yourAttacks);
+    this.otherPlayer.send(JSON.stringify(attackMsg));
+
+    // Check if you can fire again
+
     this.attackTarget = undefined;
   }
 
@@ -129,11 +145,11 @@ export class GameState {
     this.otherPlayerAttacks = [];
 
     for (let i = 0; i < GRID_SIZE; i++) {
-      const yCol: Attack[] = [];
-      const oCol: Attack[] = [];
+      const yCol: TargetCell[] = [];
+      const oCol: TargetCell[] = [];
       for (let j = 0; j < GRID_SIZE; j++) {
-        oCol.push(Attack.NONE);
-        yCol.push(Attack.NONE);
+        oCol.push(new TargetCell());
+        yCol.push(new TargetCell());
       }
       this.yourAttacks.push(yCol);
       this.otherPlayerAttacks.push(oCol);

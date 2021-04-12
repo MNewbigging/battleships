@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react';
 import React from 'react';
 
-import { GridPos } from '../game-setup/GridData';
+import { GridPos, TargetCell } from '../game-setup/GridData';
 import { ShipUtils } from '../game-setup/ShipUtils';
 import { Attack } from './GameState';
 import { TargetGridCell } from './TargetGridCell';
@@ -9,10 +9,9 @@ import { TargetGridCell } from './TargetGridCell';
 import './target-grid.scss';
 
 interface TGProps {
-  attacks: Attack[][];
+  targetCells: TargetCell[][];
   active: boolean;
   onSelectCell: (pos: GridPos) => void;
-  selectedCell: GridPos;
 }
 
 @observer
@@ -26,17 +25,16 @@ export class TargetGrid extends React.PureComponent<TGProps> {
   }
 
   private renderGrid() {
-    const { attacks, onSelectCell, selectedCell } = this.props;
+    const { targetCells, onSelectCell } = this.props;
     const cells: JSX.Element[] = [];
 
-    attacks.forEach((row, i) => {
-      row.forEach((attack, j) => {
+    targetCells.forEach((row, i) => {
+      row.forEach((targetCell, j) => {
         cells.push(
           <TargetGridCell
             key={`tc-${i}${j}`}
-            attack={attack}
+            targetCell={targetCell}
             onSelect={() => onSelectCell({ x: i, y: j })}
-            selected={ShipUtils.areGridPositionsEqual({ x: i, y: j }, selectedCell)}
           />
         );
       });

@@ -1,9 +1,12 @@
 // tslint:disable: max-classes-per-file
 
+import { TargetCell } from '../game-setup/GridData';
+
 export enum MessageType {
   NAME,
   READY,
   START,
+  ATTACK,
 }
 
 export abstract class BaseMessage {
@@ -25,5 +28,11 @@ export class ReadyMessage extends BaseMessage {
 export class StartMessage extends BaseMessage {
   constructor(public youStart: boolean) {
     super(MessageType.START);
+  }
+}
+
+export class AttackMessage extends BaseMessage {
+  constructor(public attackGrid: TargetCell[][]) {
+    super(MessageType.ATTACK);
   }
 }

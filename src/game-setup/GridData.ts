@@ -1,6 +1,7 @@
 // tslint:disable: max-classes-per-file
 
 import { action, observable } from 'mobx';
+import { Attack } from '../game/GameState';
 import { Ship, ShipArea, ShipOrientation, ShipUtils } from './ShipUtils';
 
 export const GRID_SIZE = 10;
@@ -204,4 +205,9 @@ export class Cell {
   constructor(pos: GridPos) {
     this.gridPos = pos;
   }
+}
+
+export class TargetCell {
+  @observable public attack: Attack = Attack.NONE;
+  @observable public selected = false;
 }
