@@ -143,7 +143,7 @@ export class GameState {
     const attackMsg = new AttackMessage(this.yourAttacks);
     this.otherPlayer.send(JSON.stringify(attackMsg));
 
-    // Check if you can fire again
+    // Check if you can fire again, change turn if not
     this.canFireAgain(attack, otherPlayerCell.content);
 
     // Clear attack target
